@@ -14,19 +14,19 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (Input.GetKey(KeyCode.W) && transform.position == targetPos) {
+		if (Input.GetKeyDown(KeyCode.W) && transform.position == targetPos) {
             targetPos += Vector3.up;
         }
-        if (Input.GetKey(KeyCode.A) && transform.position == targetPos) {
+        if (Input.GetKeyDown(KeyCode.A) && transform.position == targetPos) {
             targetPos += Vector3.left;
         }
-        if (Input.GetKey(KeyCode.S) && transform.position == targetPos) {
+        if (Input.GetKeyDown(KeyCode.S) && transform.position == targetPos) {
             targetPos += Vector3.down;
         }
-        if (Input.GetKey(KeyCode.D) && transform.position == targetPos) {
+        if (Input.GetKeyDown(KeyCode.D) && transform.position == targetPos) {
             targetPos += Vector3.right;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * speed);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speed);
 	}
 }
