@@ -15,16 +15,16 @@ public class PlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (Input.GetKeyDown(KeyCode.W) && transform.position == targetPos) {
-            targetPos += Vector3.up;
+            targetPos += transform.up;
         }
         if (Input.GetKeyDown(KeyCode.A) && transform.position == targetPos) {
-            targetPos += Vector3.left;
+            transform.Rotate(new Vector3(0, 0, 90));
         }
         if (Input.GetKeyDown(KeyCode.S) && transform.position == targetPos) {
-            targetPos += Vector3.down;
+            targetPos -= transform.up;
         }
         if (Input.GetKeyDown(KeyCode.D) && transform.position == targetPos) {
-            targetPos += Vector3.right;
+            transform.Rotate(new Vector3(0, 0, -90));
         }
 
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speed);
