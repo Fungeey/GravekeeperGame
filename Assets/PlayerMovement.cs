@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
     [SerializeField]
-    private float movSpeed = 5f;
+    private float movSpeed = 0.1f;
     [SerializeField]
-    private float rotSpeed = 20f;
+    private float rotSpeed = 15f;
 
     private Vector3 targetPos;
     private Quaternion targetRot;
