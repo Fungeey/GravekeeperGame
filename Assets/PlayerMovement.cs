@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public Direction direction; // represents direction player is facing
     public Vector3Int tilePos; // represents location on levelGrid
+    public Vector3Int aheadTile; //represents the grid location of the tile in front
 
     public bool moving = false;
 
@@ -44,6 +45,8 @@ public class PlayerMovement : MonoBehaviour {
                 moving = true;
             }
         }
+
+        Debug.DrawRay(transform.position, transform.up, Color.red);
     }
 
     void FixedUpdate() {
@@ -59,13 +62,21 @@ public class PlayerMovement : MonoBehaviour {
     bool CanMove(Direction direction) {
         // replace with smarter system later
         // tile to move into
-        Vector3Int aheadTile = tilePos + DirectionVector(direction);
+        aheadTile = tilePos + DirectionVector(direction);
+
         Debug.Log(tilemaps[1].HasTile(aheadTile));
-        if (tilemaps[1].HasTile(aheadTile)) {
+
+        Ray ray = new Ray(transform.position, (levelGrid.CellToWorld(aheadTile) - transform.position) + new Vector3(0.5f, 0.5f, 0));
+
+        // Check for wall tiles in Main layer
+        // Raycast for interactable objects
+        //  || Physics.Raycast(ray, 1)
+        //Debug.Log(Physics2D.Raycast(transform.position, transform.up, 0.5f));
+        if (tilemaps[1].HasTile(aheadTile) || Physics2D.Raycast(transform.position, transform.up, 0.5f)) {
             return false;
         }
 
-        if (tilemaps[0].HasTile(aheadTile)) {
+        if (tilemaps[0].HasTile(aheadTile)) { 
             return true;
         }
         
@@ -74,6 +85,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     Vector3Int DirectionVector(Direction direction) {
+        // Correctly map directions from enum
         switch (direction) {
             case Direction.UP:
                 return Vector3Int.up;
