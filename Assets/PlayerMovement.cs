@@ -47,8 +47,8 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        if (transform.position != levelGrid.CellToWorld(tilePos)) {
-            transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos), moveSpeed);
+        if (transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) {
+            transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
         } else if (Vector3Int.RoundToInt(transform.rotation.eulerAngles) != Vector3Int.RoundToInt(DirectionQuaternion(direction).eulerAngles)) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, DirectionQuaternion(direction), pivotSpeed);
         } else moving = false;
