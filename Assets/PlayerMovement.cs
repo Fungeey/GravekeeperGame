@@ -28,18 +28,18 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetAxisRaw("Horizontal") == -1 && !moving) { // turn left
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && !moving) { // turn left
             direction = (Direction) (((int) direction + 3) % 4); // +3 rather than -1 because modulo is weird
             moving = true;
-        } else if (Input.GetAxisRaw("Horizontal") == 1 && !moving) { // turn right
+        } else if (Input.GetKeyDown(KeyCode.RightArrow) && !moving) { // turn right
             direction = (Direction) (((int) direction + 1) % 4);
             moving = true;
-        } else if (Input.GetAxisRaw("Vertical") == 1 && !moving) { // forwards
+        } else if (Input.GetKeyDown(KeyCode.UpArrow) && !moving) { // forwards
             if (CanMove(direction)) {
                 tilePos += DirectionVector(direction);
                 moving = true;
             }
-        } else if (Input.GetAxisRaw("Vertical") == -1 && !moving) { // backwards
+        } else if (Input.GetKeyDown(KeyCode.DownArrow) && !moving) { // backwards
             if (CanMove((Direction) (((int) direction + 2) % 4))) {
                 tilePos -= DirectionVector(direction);
                 moving = true;
@@ -64,11 +64,9 @@ public class PlayerMovement : MonoBehaviour {
 
         Debug.Log(tilemaps[1].HasTile(aheadTile));
 
-        Ray ray = new Ray(transform.position, (levelGrid.CellToWorld(aheadTile) - transform.position) + new Vector3(0.5f, 0.5f, 0));
-
         // Check for wall tiles in Main layer
         // Raycast for interactable objects
-        if (tilemaps[1].HasTile(aheadTile) || Physics2D.Raycast(transform.position, transform.up, 0.5f)) {
+        if (tilemaps[1].HasTile(aheadTile) || Physics2D.Raycast(transform.position, transform.up, 1f)) {
             return false;
         }
 
@@ -79,6 +77,7 @@ public class PlayerMovement : MonoBehaviour {
             
         return false;
     }
+
 
     Vector3Int DirectionVector(Direction direction) {
         // Correctly map directions from enum
