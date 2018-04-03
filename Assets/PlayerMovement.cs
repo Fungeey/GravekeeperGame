@@ -28,25 +28,25 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.A) && !moving) { // turn left
+        if (Input.GetAxisRaw("Horizontal") == -1 && !moving) { // turn left
             direction = (Direction) (((int) direction + 3) % 4); // +3 rather than -1 because modulo is weird
             moving = true;
-        } else if (Input.GetKeyDown(KeyCode.D) && !moving) { // turn right
+        } else if (Input.GetAxisRaw("Horizontal") == 1 && !moving) { // turn right
             direction = (Direction) (((int) direction + 1) % 4);
             moving = true;
-        } else if (Input.GetKeyDown(KeyCode.W) && !moving) { // forwards
+        } else if (Input.GetAxisRaw("Vertical") == 1 && !moving) { // forwards
             if (CanMove(direction)) {
                 tilePos += DirectionVector(direction);
                 moving = true;
             }
-        } else if (Input.GetKeyDown(KeyCode.S) && !moving) { // backwards
+        } else if (Input.GetAxisRaw("Vertical") == -1 && !moving) { // backwards
             if (CanMove((Direction) (((int) direction + 2) % 4))) {
                 tilePos -= DirectionVector(direction);
                 moving = true;
             }
         }
 
-        Debug.DrawRay(transform.position, transform.up, Color.red);
+        Debug.DrawLine(transform.position, levelGrid.CellToWorld(aheadTile) + new Vector3(0.5f, 0.5f, 0), Color.red);
     }
 
     void FixedUpdate() {
@@ -55,8 +55,6 @@ public class PlayerMovement : MonoBehaviour {
         } else if (Vector3Int.RoundToInt(transform.rotation.eulerAngles) != Vector3Int.RoundToInt(DirectionQuaternion(direction).eulerAngles)) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, DirectionQuaternion(direction), pivotSpeed);
         } else moving = false;
-
-        //transform.position = levelGrid.CellToWorld(targetPos);
     }
 
     bool CanMove(Direction direction) {
@@ -70,8 +68,6 @@ public class PlayerMovement : MonoBehaviour {
 
         // Check for wall tiles in Main layer
         // Raycast for interactable objects
-        //  || Physics.Raycast(ray, 1)
-        //Debug.Log(Physics2D.Raycast(transform.position, transform.up, 0.5f));
         if (tilemaps[1].HasTile(aheadTile) || Physics2D.Raycast(transform.position, transform.up, 0.5f)) {
             return false;
         }
