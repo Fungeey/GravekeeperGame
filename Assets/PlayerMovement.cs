@@ -20,6 +20,10 @@ public class PlayerMovement : MonoBehaviour {
     public Vector3Int tilePos; // represents location on levelGrid
     public Vector3Int aheadTile; //represents the grid location of the tile in front
 
+    [HideInInspector]
+    public bool isHolding = false;
+    public GameObject holdObject; // Object being held (if any)
+
     public bool moving = false;
 
     // Use this for initialization
@@ -62,11 +66,11 @@ public class PlayerMovement : MonoBehaviour {
         // tile to move into
         aheadTile = tilePos + DirectionVector(direction);
 
-        Debug.Log(tilemaps[1].HasTile(aheadTile));
+        //Debug.Log(tilemaps[1].HasTile(aheadTile));
 
         // Check for wall tiles in Main layer
         // Raycast for interactable objects
-        if (tilemaps[1].HasTile(aheadTile) || Physics2D.Raycast(transform.position, transform.up, 1f)) {
+        if (tilemaps[1].HasTile(aheadTile) || Physics2D.Raycast(transform.position, new Vector2(DirectionVector(direction).x, DirectionVector(direction).y), 1f)) {
             return false;
         }
 
@@ -77,7 +81,6 @@ public class PlayerMovement : MonoBehaviour {
             
         return false;
     }
-
 
     Vector3Int DirectionVector(Direction direction) {
         // Correctly map directions from enum
