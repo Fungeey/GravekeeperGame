@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour {
     public enum Direction {
@@ -13,56 +14,62 @@ public class PlayerMovement : MonoBehaviour {
     private float pivotSpeed = 15f;
 
     public Grid levelGrid;
+    public Tilemap[] tilemaps; // 0, 1: ground, main
 
     public Direction direction; // represents direction player is facing
-    public Vector3Int targetPos; // represents location on levelGrid
+    public Vector3Int tilePos; // represents location on levelGrid
 
-    private bool moving = false;
+    public bool moving = false;
 
     // Use this for initialization
     void Start() {
-        targetPos = levelGrid.WorldToCell(transform.position);
+        tilePos = levelGrid.WorldToCell(transform.position);
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.A)) { // turn left
+        if (Input.GetKeyDown(KeyCode.A) && !moving) { // turn left
             direction = (Direction) (((int) direction + 3) % 4); // +3 rather than -1 because modulo is weird
-        } else if (Input.GetKeyDown(KeyCode.D)) { // turn right
-            direction = (Direction) (((int) direction + 1) % 4); 
-        } else if (Input.GetKeyDown(KeyCode.W)) { // forwards
-            targetPos += DirectionVector(direction);
-        } else if (Input.GetKeyDown(KeyCode.S)) { // backwards
-            targetPos -= DirectionVector(direction);
+            moving = true;
+        } else if (Input.GetKeyDown(KeyCode.D) && !moving) { // turn right
+            direction = (Direction) (((int) direction + 1) % 4);
+            moving = true;
+        } else if (Input.GetKeyDown(KeyCode.W) && !moving) { // forwards
+            if (CanMove(direction)) {
+                tilePos += DirectionVector(direction);
+                moving = true;
+            }
+        } else if (Input.GetKeyDown(KeyCode.S) && !moving) { // backwards
+            if (CanMove((Direction) (((int) direction + 2) % 4))) {
+                tilePos -= DirectionVector(direction);
+                moving = true;
+            }
         }
     }
 
     void FixedUpdate() {
-        if (transform.position != levelGrid.CellToWorld(targetPos)) {
-            transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(targetPos), moveSpeed);
-        } else if (transform.rotation.eulerAngles != DirectionVector(direction)) {
+        if (transform.position != levelGrid.CellToWorld(tilePos)) {
+            transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos), moveSpeed);
+        } else if (Vector3Int.RoundToInt(transform.rotation.eulerAngles) != Vector3Int.RoundToInt(DirectionQuaternion(direction).eulerAngles)) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, DirectionQuaternion(direction), pivotSpeed);
-        }
+        } else moving = false;
 
         //transform.position = levelGrid.CellToWorld(targetPos);
     }
 
-    Vector3 SnapToGrid(Vector3 position) {
-        return levelGrid.CellToWorld(levelGrid.WorldToCell(position));
-    }
+    bool CanMove(Direction direction) {
+        // replace with smarter system later
+        // tile to move into
+        Vector3Int aheadTile = tilePos + DirectionVector(direction);
+        Debug.Log(tilemaps[1].HasTile(aheadTile));
+        if (tilemaps[1].HasTile(aheadTile)) {
+            return false;
+        }
 
-    Quaternion SnapToRight(Quaternion rotation) {
-        Vector3 angles = rotation.eulerAngles;
-        angles = new Vector3Int(Mathf.RoundToInt(angles.x), Mathf.RoundToInt(angles.y), Mathf.RoundToInt(angles.z));
-        return Quaternion.Euler(angles);
-    }
-
-    void RoundTransform() {
-        transform.position = SnapToGrid(transform.position);
-        transform.rotation = SnapToRight(transform.rotation);
-    }
-
-    bool CanMove(Vector3 direction) {
-
+        if (tilemaps[0].HasTile(aheadTile)) {
+            return true;
+        }
+        
+            
         return false;
     }
 
