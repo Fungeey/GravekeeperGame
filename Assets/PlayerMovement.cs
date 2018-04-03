@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour {
     public Tilemap[] tilemaps; // 0, 1: ground, main
 
     public Direction direction; // represents direction player is facing
+    public Direction moveDirection; // represents 
     public Vector3Int tilePos; // represents location on levelGrid
     public Vector3Int aheadTile; //represents the grid location of the tile in front
 
@@ -51,7 +52,9 @@ public class PlayerMovement : MonoBehaviour {
                 moving = true;
             }
         }
-
+        if (!moving) {
+            moveDirection = direction;
+        }
         if (Input.GetKeyDown(KeyCode.Z)) { // Start holding
             isHolding = CanGrab(direction);
         } else if(Input.GetKeyUp(KeyCode.Z)) { // Stop holding
@@ -72,7 +75,7 @@ public class PlayerMovement : MonoBehaviour {
         } else if (Vector3Int.RoundToInt(transform.rotation.eulerAngles) != Vector3Int.RoundToInt(DirectionQuaternion(direction).eulerAngles)) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, DirectionQuaternion(direction), pivotSpeed);
 
-            if (isHolding) {
+            if (isHolding && CanTurn(direction)) {
                 Debug.Log("Turning");
                 holdObject.transform.position = Vector3.MoveTowards(holdObject.transform.position, holdPosition.position, moveSpeed*3);
             }
@@ -113,15 +116,28 @@ public class PlayerMovement : MonoBehaviour {
         return false;
     }
 
-    /*bool CanTurn(Direction direction) {
+    bool CanTurn(Direction direction) {
         Vector3Int dir = DirectionVector(direction);
-        if (direction == Direction.LEFT) {
-            if(!IsSolidAtPos(tilePos + dir))
-        }else if(direction == Direction.RIGHT) {
-
+        if (moveDirection == Direction.LEFT) {
+            if (!IsSolidAtPos(tilePos + DirectionVector((Direction)(((int)direction + 3) % 4)) + DirectionVector(direction))) { // Up and left (relative)
+                if(tilemaps[0].HasTile((tilePos + DirectionVector((Direction)(((int)direction + 3) % 4))))) { // Left (relative)
+                    return true;
+                }
+            }
+        }else if(moveDirection == Direction.RIGHT) {
+            if (!IsSolidAtPos(tilePos + DirectionVector((Direction)(((int)direction + 1) % 4)))) {
+                Vector3 pos = levelGrid.CellToWorld(tilePos + DirectionVector((Direction)(((int)direction + 1) % 4)));
+                Debug.DrawLine(pos, pos + new Vector3(0.2f, 0, 0), Color.red, 10f);
+                if (tilemaps[0].HasTile(tilePos + DirectionVector((Direction)(((int)direction + 3) % 4)) + DirectionVector(direction))) {
+                    Vector3 pos2 = levelGrid.CellToWorld(tilePos + DirectionVector((Direction)(((int)direction + 1) % 4)));
+                    Debug.DrawLine(pos2, pos2 + new Vector3(0.2f, 0, 0), Color.green, 10f);
+                    return true;
+                }
+            }
         }
+        return false;
     }
-    */
+    
 
     bool IsSolidAtPos(Vector3Int pos) {
         Vector2 rayPos = new Vector2(pos.x, pos.y);
