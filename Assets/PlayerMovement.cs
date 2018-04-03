@@ -23,12 +23,14 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector]
     public bool isHolding = false;
     public GameObject holdObject; // Object being held (if any)
+    public Transform holdPosition;
 
     public bool moving = false;
 
     // Use this for initialization
     void Start() {
         tilePos = levelGrid.WorldToCell(transform.position);
+        aheadTile = tilePos + DirectionVector(direction);
     }
 
     void Update() {
@@ -50,27 +52,44 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Z)) { // Start holding
+            isHolding = CanGrab(direction);
+        } else if(Input.GetKeyUp(KeyCode.Z)) { // Stop holding
+            isHolding = false;
+            holdObject = null;
+        }
+
         Debug.DrawLine(transform.position, levelGrid.CellToWorld(aheadTile) + new Vector3(0.5f, 0.5f, 0), Color.red);
     }
 
     void FixedUpdate() {
         if (transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) {
             transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
+
+            if (isHolding) {
+                holdObject.transform.position = Vector3.MoveTowards(holdObject.transform.position, holdPosition.position, moveSpeed);
+            }
         } else if (Vector3Int.RoundToInt(transform.rotation.eulerAngles) != Vector3Int.RoundToInt(DirectionQuaternion(direction).eulerAngles)) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, DirectionQuaternion(direction), pivotSpeed);
+
+            if (isHolding) {
+                Debug.Log("Turning");
+                holdObject.transform.position = Vector3.MoveTowards(holdObject.transform.position, holdPosition.position, moveSpeed*3);
+            }
         } else moving = false;
     }
 
     bool CanMove(Direction direction) {
         // replace with smarter system later
         // tile to move into
-        aheadTile = tilePos + DirectionVector(direction);
-
-        //Debug.Log(tilemaps[1].HasTile(aheadTile));
 
         // Check for wall tiles in Main layer
-        // Raycast for interactable objects
-        if (tilemaps[1].HasTile(aheadTile) || Physics2D.Raycast(transform.position, new Vector2(DirectionVector(direction).x, DirectionVector(direction).y), 1f)) {
+        // Raycast for interactable objects\
+
+        aheadTile = tilePos + DirectionVector(direction);
+
+        Vector2 rayDirection = new Vector2(DirectionVector(direction).x, DirectionVector(direction).y);
+        if (tilemaps[1].HasTile(aheadTile) || (Physics2D.Raycast(transform.position, rayDirection, 1f) && !isHolding)) {
             return false;
         }
 
@@ -79,6 +98,36 @@ public class PlayerMovement : MonoBehaviour {
         }
         
             
+        return false;
+    }
+
+    bool CanGrab(Direction direction) {
+        if (isHolding) {
+            return true;
+        }
+        Vector2 rayDirection = new Vector2(DirectionVector(direction).x, DirectionVector(direction).y);
+        if (Physics2D.Raycast(transform.position, rayDirection, 1f)) {
+            holdObject = Physics2D.Raycast(transform.position, rayDirection, 1f).collider.gameObject;
+            return true;
+        }
+        return false;
+    }
+
+    /*bool CanTurn(Direction direction) {
+        Vector3Int dir = DirectionVector(direction);
+        if (direction == Direction.LEFT) {
+            if(!IsSolidAtPos(tilePos + dir))
+        }else if(direction == Direction.RIGHT) {
+
+        }
+    }
+    */
+
+    bool IsSolidAtPos(Vector3Int pos) {
+        Vector2 rayPos = new Vector2(pos.x, pos.y);
+        if (tilemaps[1].HasTile(pos) || Physics2D.Raycast(rayPos, Vector2.up, 0.1f)) {
+            return true;
+        }
         return false;
     }
 
