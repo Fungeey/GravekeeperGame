@@ -37,21 +37,12 @@ public static class Utility {
     }
 
     public static bool IsSolidAtPos(Tilemap[] tilemaps, Vector3Int pos) {
-        // Debug.DrawLine(transform.position, levelGrid.CellToWorld(pos) + new Vector3(0.5f, 0.5f), Color.blue, 2);
+        Grid levelGrid = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<Grid>();
+        Debug.DrawLine(levelGrid.CellToWorld(pos) + new Vector3(0.4f, 0.4f), levelGrid.CellToWorld(pos) + new Vector3(0.6f, 0.6f), Color.blue, 2);
         Collider2D coll = Physics2D.OverlapArea(tilemaps[0].CellToWorld(pos) + new Vector3(.1f, .1f, 0), tilemaps[0].CellToWorld(pos + new Vector3Int(1, 1, 0)) - new Vector3(.1f, .1f, 0));
         if (tilemaps[1].HasTile(pos) || coll != null) {
             return true;
         }
-        return false;
-    }
-
-    public static bool GetSoulAtPos(Tilemap[] tilemaps, Vector3Int pos, out SoulController soul) {
-        Collider2D coll = Physics2D.OverlapArea(tilemaps[0].CellToWorld(pos) + new Vector3(.1f, .1f, 0), tilemaps[0].CellToWorld(pos + new Vector3Int(1, 1, 0)) - new Vector3(.1f, .1f, 0));
-        if (coll != null && coll.GetComponent<SoulController>() != null) {
-            soul = coll.GetComponent<SoulController>();
-            return true;
-        }
-        soul = null;
         return false;
     }
 

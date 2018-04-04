@@ -65,13 +65,19 @@ public class PlayerMovement : TileObject {
                 Debug.Log("Turning");
                 holdObject.transform.position = Vector3.MoveTowards(holdObject.transform.position, holdPosition.position, moveSpeed * 3);
             }
-        } else moving = false;
+        } else {
+            if (holdObject != null) {
+                holdPosition.transform.localPosition = Vector3Int.up;
+                holdObject.tilePos = levelGrid.WorldToCell(holdPosition.transform.position);
+            }
+            moving = false;
+        }
     }
 
-    bool CanMove(Direction faceDir) {
+    bool CanMove(Direction moveDir) {
         // replace with smarter system later
 
-        Vector3Int aheadTile = tilePos + Utility.DirectionVector(faceDir);
+        Vector3Int aheadTile = tilePos + Utility.DirectionVector(moveDir);
 
         if (!tilemaps[0].HasTile(aheadTile)) {
             return false;
@@ -84,7 +90,7 @@ public class PlayerMovement : TileObject {
 
         TileObject to;
         if (Utility.GetTileObjectAtPos(aheadTile, out to) && to.pushable) {
-            return to.pushComp.Push(faceDir);
+            return to.pushComp.Push(moveDir);
         }
 
         if (holdObject == null) {
@@ -92,8 +98,8 @@ public class PlayerMovement : TileObject {
                 return false;
             }
         } else {
-            if (faceDir == facing) { // moving forwards
-                return holdObject.grabComp.CanMove(faceDir);
+            if (moveDir == facing) { // moving forwards
+                return holdObject.grabComp.CanMove(moveDir);
             } else {
                 if (Utility.IsSolidAtPos(tilemaps, aheadTile)) {
                     return false;
