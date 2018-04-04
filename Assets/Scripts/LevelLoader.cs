@@ -10,20 +10,19 @@ public class LevelLoader : MonoBehaviour {
 
     private Grid levelGrid;
     private Tilemap tileMap;
-    private int width, length;
 	// Use this for initialization
 	void Start () {
         levelGrid = GetComponent<Grid>();
         tileMap = levelGrid.gameObject.transform.Find("Main").GetComponent<Tilemap>();
-        width = tileMap.size.x;
-        length = tileMap.size.y;
+        tileMap.CompressBounds();
+        Debug.Log(tileMap.cellBounds);
         LoadLevel();
     }
 	
 	// Update is called once per frame
 	void LoadLevel () {
-		for(int i = 0; i < width; i++) {
-            for(int j = 0; j < length; j++) {
+		for(int i = tileMap.cellBounds.xMin; i < tileMap.cellBounds.xMax; i++) {
+            for(int j = tileMap.cellBounds.yMin; j < tileMap.cellBounds.yMax; j++) {
                 Vector3Int pos = new Vector3Int(i, j, 0);
                 TileBase tile = tileMap.GetTile(pos);
                 string name;
