@@ -15,8 +15,8 @@ public class LevelLoader : MonoBehaviour {
         levelGrid = GetComponent<Grid>();
         tileMap = levelGrid.gameObject.transform.Find("Main").GetComponent<Tilemap>();
         tileMap.CompressBounds();
-        Debug.Log(tileMap.cellBounds);
         LoadLevel();
+        CenterCamera();
     }
 	
 	// Update is called once per frame
@@ -50,4 +50,13 @@ public class LevelLoader : MonoBehaviour {
             }
         }
 	}
+
+    void CenterCamera() {
+        Tilemap ground = levelGrid.transform.Find("Ground").GetComponent<Tilemap>();
+        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
+        ground.CompressBounds();
+        Vector3 center = ground.localBounds.center;
+        center.z = -10;
+        camera.transform.position = center;
+    }
 }
