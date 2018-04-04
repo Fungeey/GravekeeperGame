@@ -54,4 +54,15 @@ public static class Utility {
         soul = null;
         return false;
     }
+
+    public static bool GetTileObjectAtPos(Vector3Int pos, out TileObject tileObject) {
+        Grid levelGrid = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<Grid>();
+        Collider2D coll = Physics2D.OverlapArea(levelGrid.CellToWorld(pos) + new Vector3(.1f, .1f, 0), levelGrid.CellToWorld(pos + new Vector3Int(1, 1, 0)) - new Vector3(.1f, .1f, 0));
+        if (coll != null && coll.GetComponent<TileObject>() != null) {
+            tileObject = coll.GetComponent<TileObject>();
+            return true;
+        }
+        tileObject = null;
+        return false;
+    }
 }

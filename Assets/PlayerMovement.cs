@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour {
     public Tilemap[] tilemaps; // 0, 1: ground, main
 
     public Direction facing; // represents direction player is facing
-    public Direction moveDirection; // represents 
     public Vector3Int tilePos; // represents location on levelGrid
     public Vector3Int aheadTile; //represents the grid location of the tile in front
 
@@ -53,9 +52,6 @@ public class PlayerMovement : MonoBehaviour {
                 tilePos -= Utility.DirectionVector(facing);
                 moving = true;
             }
-        }
-        if (!moving) {
-            moveDirection = facing;
         }
         if (Input.GetKeyDown(KeyCode.Z)) { // toggle hold
             if (holdObject == null) {
@@ -112,7 +108,6 @@ public class PlayerMovement : MonoBehaviour {
                 }
             }
         }
-        
         return true;
     }
 

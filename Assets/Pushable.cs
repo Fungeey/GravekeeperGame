@@ -4,7 +4,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(TileObject))]
 public class Pushable : MonoBehaviour {
-    public TileObject tileObject;
+    private TileObject tileObject;
+
     public void Start() {
         tileObject = GetComponent<TileObject>();
     }

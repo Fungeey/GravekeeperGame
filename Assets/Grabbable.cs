@@ -4,19 +4,20 @@ using UnityEngine;
 
 [RequireComponent(typeof(TileObject))]
 public class Grabbable : MonoBehaviour {
-    public bool held;
-    public TileObject tileObject;
+    private TileObject tileObject;
+
+    public bool isHeld;
 
     public void Start() {
         tileObject = GetComponent<TileObject>();
     }
 
     public void Grab() {
-        held = true;
+        isHeld = true;
     }
 
     public void Drop() {
         tileObject.SetTilePos();
-        held = false;
+        isHeld = false;
     }
 }
