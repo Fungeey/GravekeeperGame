@@ -5,30 +5,36 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class TileObject : MonoBehaviour {
     [SerializeField]
-    private float moveSpeed = 0.1f;
+    protected float moveSpeed = 0.11f;
 
+    [HideInInspector]
     public Grid levelGrid;
+    [HideInInspector]
     public Tilemap[] tilemaps;
+
     public Vector3Int tilePos;
 
     public bool grabbable = false;
     public bool pushable = false;
 
+    [HideInInspector]
     public Grabbable grabComp;
+    [HideInInspector]
     public Pushable pushComp;
 
-    private void Awake() {
+    protected virtual void Awake() {
         levelGrid = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<Grid>();
         tilemaps = levelGrid.GetComponentsInChildren<Tilemap>();
         tilePos = levelGrid.WorldToCell(transform.position);
 
         grabComp = grabbable ? gameObject.AddComponent<Grabbable>() : null;
-        pushComp = grabbable ? gameObject.AddComponent<Pushable>() : null;
+        pushComp = pushable ? gameObject.AddComponent<Pushable>() : null;
     }
 
-    private void FixedUpdate() {
+    protected virtual void FixedUpdate() {
         if (!(grabbable && grabComp.isHeld) && transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) {
             transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
         }
