@@ -43,7 +43,7 @@ public class LevelLoader : MonoBehaviour {
                         }
                         case "Movable Wall": {
                             tileMap.SetTile(pos, null);
-                            Instantiate(objects[2], tileMap.CellToWorld(pos), Quaternion.identity);
+                            Instantiate(objects[2], tileMap.CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                             break;
                         }
                     }
