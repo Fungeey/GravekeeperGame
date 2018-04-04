@@ -141,7 +141,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1980572671}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &267619356
 TilemapRenderer:
@@ -654,7 +654,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1980572671}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &624827414
 TilemapRenderer:
@@ -996,8 +996,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2037747806}
-  - {fileID: 624827412}
   - {fileID: 267619355}
+  - {fileID: 624827412}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1107,11 +1107,11 @@ MonoBehaviour:
   tilemaps:
   - {fileID: 267619357}
   - {fileID: 624827415}
-  direction: 0
+  facing: 0
   moveDirection: 0
   tilePos: {x: -2, y: 1, z: 0}
   aheadTile: {x: 0, y: 0, z: 0}
-  isHolding: 0
   holdObject: {fileID: 0}
   holdPosition: {fileID: 1969654922}
   moving: 0
+  turning: 0
