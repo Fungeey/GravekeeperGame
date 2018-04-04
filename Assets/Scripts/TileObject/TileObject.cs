@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(BoxCollider2D))]
 public class TileObject : MonoBehaviour {
     [SerializeField]
-    protected float moveSpeed = 0.11f;
+    protected float moveSpeed = 0.1f;
 
     [HideInInspector]
     public Grid levelGrid;

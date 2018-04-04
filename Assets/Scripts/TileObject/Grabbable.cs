@@ -12,6 +12,14 @@ public class Grabbable : MonoBehaviour {
         tileObject = GetComponent<TileObject>();
     }
 
+    public bool CanMove(Direction pushDir) {
+        Vector3Int aheadTile = tileObject.tilePos + Utility.DirectionVector(pushDir);
+        if (Utility.IsSolidAtPos(tileObject.tilemaps, aheadTile)) {
+            return false;
+        }
+        return true;
+    }
+
     public void Grab() {
         isHeld = true;
     }

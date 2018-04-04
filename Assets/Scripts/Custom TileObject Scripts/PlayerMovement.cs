@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class PlayerMovement : TileObject {
     [SerializeField]
-    private float pivotSpeed = 14f;
+    private float pivotSpeed = 15f;
 
     public Direction facing; // represents direction player is facing
 
