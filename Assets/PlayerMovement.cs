@@ -12,8 +12,8 @@ public class PlayerMovement : MonoBehaviour {
     public Grid levelGrid;
     public Tilemap[] tilemaps; // 0, 1: ground, main
 
-    public Directions facing; // represents direction player is facing
-    public Directions moveDirection; // represents 
+    public Direction facing; // represents direction player is facing
+    public Direction moveDirection; // represents 
     public Vector3Int tilePos; // represents location on levelGrid
     public Vector3Int aheadTile; //represents the grid location of the tile in front
 
@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour {
     public Transform holdPosition;
 
     public bool moving = false;
-    public Directions turning = Directions.UP;
+    public Direction turning = Direction.UP;
 
     // Use this for initialization
     void Start() {
@@ -32,15 +32,15 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.A) && !moving) { // turn left
-            if (CanTurn(facing, Directions.LEFT)) {
-                facing = Utility.DirAdd(facing, Directions.LEFT);
-                turning = Directions.LEFT;
+            if (CanTurn(facing, Direction.LEFT)) {
+                facing = Utility.DirAdd(facing, Direction.LEFT);
+                turning = Direction.LEFT;
                 moving = true;
             }
         } else if (Input.GetKeyDown(KeyCode.D) && !moving) { // turn right
-            if (CanTurn(facing, Directions.RIGHT)) {
-                facing = Utility.DirAdd(facing, Directions.RIGHT);
-                turning = Directions.RIGHT;
+            if (CanTurn(facing, Direction.RIGHT)) {
+                facing = Utility.DirAdd(facing, Direction.RIGHT);
+                turning = Direction.RIGHT;
                 moving = true;
             }
         } else if (Input.GetKeyDown(KeyCode.W) && !moving) { // forwards
@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour {
                 moving = true;
             }
         } else if (Input.GetKeyDown(KeyCode.S) && !moving) { // backwards
-            if (CanMove(Utility.DirAdd(facing, Directions.DOWN))) {
+            if (CanMove(Utility.DirAdd(facing, Direction.DOWN))) {
                 tilePos -= Utility.DirectionVector(facing);
                 moving = true;
             }
@@ -59,9 +59,9 @@ public class PlayerMovement : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Z)) { // toggle hold
             if (holdObject == null) {
-                Grab(facing);
+                GrabAhead(facing);
             } else {
-                Drop();
+                DropHeld();
             }
         }
 
@@ -85,17 +85,18 @@ public class PlayerMovement : MonoBehaviour {
         } else moving = false;
     }
 
-    bool CanMove(Directions faceDir) {
+    bool CanMove(Direction faceDir) {
         // replace with smarter system later
-        // tile to move into
-
-        // Check for wall tiles in Main layer
-        // Raycast for interactable objects
 
         aheadTile = tilePos + Utility.DirectionVector(faceDir);
 
         if (!tilemaps[0].HasTile(aheadTile)) {
             return false;
+        }
+        
+        SoulController soul;
+        if (Utility.GetSoulAtPos(tilemaps, aheadTile, out soul)) {
+            return soul.Push(faceDir);
         }
 
         if (holdObject == null) {
@@ -103,59 +104,46 @@ public class PlayerMovement : MonoBehaviour {
                 return false;
             }
         } else {
-            if (Utility.IsSolidAtPos(tilemaps, aheadTile + Utility.DirectionVector(faceDir))) {
-                return false;
+            if (faceDir == facing) { // moving forwards
+                return holdObject.GetComponent<SoulController>().CanMove(faceDir);
+            } else {
+                if (Utility.IsSolidAtPos(tilemaps, aheadTile)) {
+                    return false;
+                }
             }
         }
         
         return true;
     }
 
-    void Grab(Directions faceDir) {
+    void GrabAhead(Direction faceDir) {
         if (holdObject == null) {
             Vector2 rayDirection = (Vector3)Utility.DirectionVector(faceDir);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDirection, 1f);
-            if (hit.collider != null) {
-                holdObject = hit.collider.gameObject;
+            SoulController soul;
+            if (Utility.GetSoulAtPos(tilemaps, tilePos + Utility.DirectionVector(faceDir), out soul)) {
+                soul.Grab();
+                holdObject = soul.gameObject;
             }
         }
         
     }
 
-    void Drop() {
+    void DropHeld() {
+        // will need to extend in future for other grabbable things?
+        holdObject.GetComponent<SoulController>().Drop();
         holdObject = null;
     }
 
-    bool CanTurn(Directions faceDir, Directions turnDirection) {
+    bool CanTurn(Direction faceDir, Direction turnDirection) {
         //Debug.DrawLine(levelGrid.CellToWorld(tilePos), levelGrid.CellToWorld(tilePos + DirectionVector(faceDir) + DirectionVector(DirAdd(faceDir, turnDirection))), Color.red, 10000);
         if (holdObject != null) {
-            if (Utility.IsSolidAtPos(tilemaps, tilePos + Utility.DirectionVector(Utility.DirAdd(faceDir, turnDirection))) || Utility.IsSolidAtPos(tilemaps, tilePos + Utility.DirectionVector(faceDir) + Utility.DirectionVector(Utility.DirAdd(faceDir, turnDirection)))) {
+            if (Utility.IsSolidAtPos(tilemaps, tilePos + Utility.DirectionVector(Utility.DirAdd(faceDir, turnDirection))) || // position + relative turning direction
+                Utility.IsSolidAtPos(tilemaps, tilePos + Utility.DirectionVector(faceDir) + Utility.DirectionVector(Utility.DirAdd(faceDir, turnDirection)))) { // position + forwards + relative turning direction
                 return false;
             }
         }
         return true;
-
-        /*
-        Vector3Int dir = DirectionVector(direction);
-        if (turnDirection == Direction.LEFT) {
-            if (!IsSolidAtPos(tilePos + DirectionVector((Direction)(((int)direction + 3) % 4)) + DirectionVector(direction))) { // Up and left (relative)
-                if (tilemaps[0].HasTile((tilePos + DirectionVector((Direction)(((int)direction + 3) % 4))))) { // Left (relative)
-                    return true;
-                }
-            }
-        } else if (turnDirection == Direction.RIGHT) {
-            if (!IsSolidAtPos(tilePos + DirectionVector((Direction)(((int)direction + 1) % 4)))) {
-                Vector3 pos = levelGrid.CellToWorld(tilePos + DirectionVector(DirAdd(direction, 1)));
-                Debug.DrawLine(pos, pos + new Vector3(0.2f, 0, 0), Color.red, 10f);
-                if (tilemaps[0].HasTile(tilePos + DirectionVector(DirAdd(direction, 3)) + DirectionVector(direction))) {
-                    Vector3 pos2 = levelGrid.CellToWorld(tilePos + DirectionVector(DirAdd(direction, 1)));
-                    Debug.DrawLine(pos2, pos2 + new Vector3(0.2f, 0, 0), Color.green, 10f);
-                    return true;
-                }
-            }
-        }
-        return false;
-        */
     }
 
 
