@@ -52,17 +52,18 @@ public class PlayerMovement : TileObject {
     }
 
     protected override void FixedUpdate() {
-        if (transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) {
+        if (transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) { // Moving
             transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
 
             if (holdObject != null) {
                 holdObject.transform.position = Vector3.MoveTowards(holdObject.transform.position, holdPosition.position, moveSpeed);
             }
-        } else if (Vector3Int.RoundToInt(transform.rotation.eulerAngles) != Vector3Int.RoundToInt(Utility.DirectionQuaternion(facing).eulerAngles)) {
+
+            IsOnExit(); // Check if you are on an exit
+        } else if (Vector3Int.RoundToInt(transform.rotation.eulerAngles) != Vector3Int.RoundToInt(Utility.DirectionQuaternion(facing).eulerAngles)) { // Turning
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Utility.DirectionQuaternion(facing), pivotSpeed);
 
             if (holdObject != null) {
-                Debug.Log("Turning");
                 holdObject.transform.position = Vector3.MoveTowards(holdObject.transform.position, holdPosition.position, moveSpeed * 3);
             }
         } else {
@@ -142,6 +143,19 @@ public class PlayerMovement : TileObject {
         return true;
     }
 
+    public bool IsOnExit() { // Check if you are standing on an exit, used in GameController win checking
+        if (tilemaps[0].GetTile(tilePos).name == "Exit") {
+            // If you are standing on an exit
+            if (gameController.win == false) {
+                gameController.CheckWin();
+                gameController.playerOnExit = true;
+            }
+            return true;
+        } else {
+            gameController.playerOnExit = false;
+        }
 
+        return false;
+    }
     
 }

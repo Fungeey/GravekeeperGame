@@ -14,6 +14,8 @@ public class TileObject : MonoBehaviour {
     public Grid levelGrid;
     [HideInInspector]
     public Tilemap[] tilemaps;
+    [HideInInspector]
+    public GameController gameController;
 
     public Vector3Int tilePos;
 
@@ -29,6 +31,8 @@ public class TileObject : MonoBehaviour {
         levelGrid = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<Grid>();
         tilemaps = levelGrid.GetComponentsInChildren<Tilemap>();
         tilePos = levelGrid.WorldToCell(transform.position);
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+
 
         grabComp = grabbable ? gameObject.AddComponent<Grabbable>() : null;
         pushComp = pushable ? gameObject.AddComponent<Pushable>() : null;

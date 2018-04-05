@@ -4,47 +4,36 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class SoulController : MonoBehaviour {
-    [SerializeField]
-    private float moveSpeed = 0.1f;
 
-    public Tilemap[] tilemaps;
-    public Vector3Int targetPos; // target position on tile grid 
-    
-    private bool held = false;
+    private Tilemap[] tilemaps;
+    private Vector3Int tilePos;
+    public Tile gravestone;
+    private Grid levelGrid;
+    public GameController gameController;
+    private TileObject soulTileObject;
 
-    private void Start() {
-        targetPos = tilemaps[0].WorldToCell(transform.position);
+    private void Start() { 
+
+        levelGrid = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<Grid>();
+        tilemaps = levelGrid.GetComponentsInChildren<Tilemap>();
+        tilePos = levelGrid.WorldToCell(transform.position);
+
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+        soulTileObject = gameObject.GetComponent<TileObject>();
     }
 
-    public bool CanMove(Direction pushDir) {
-        Vector3Int aheadTile = tilemaps[0].WorldToCell(transform.position) + Utility.DirectionVector(pushDir);
-        if (Utility.IsSolidAtPos(tilemaps, aheadTile)) {
-            return false;
+    private void Update() {
+        // If you are on a gravestone
+        if (tilemaps[0].GetTile(soulTileObject.tilePos).name == "Gravestone") {
+            // Check if all the gravestones are full
+            gameController.CheckWin();
+
+            // Then delete the gravestone
+            tilemaps[0].SetTile(soulTileObject.tilePos, null);
+            // Put a gravestone in the Main (solid) layer
+            tilemaps[1].SetTile(soulTileObject.tilePos, gravestone);
+            // Destroy this soul
+            Destroy(gameObject);
         }
-        return true;
-    }
-
-    public bool Push(Direction pushDir) {
-        if (CanMove(pushDir)) {
-            targetPos = tilemaps[0].WorldToCell(transform.position) + Utility.DirectionVector(pushDir);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void FixedUpdate() {
-        if (!held && transform.position != tilemaps[0].CellToWorld(targetPos) + new Vector3(0.5f, 0.5f, 0)) {
-            transform.position = Vector3.MoveTowards(transform.position, tilemaps[0].CellToWorld(targetPos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
-        }
-    }
-
-    public void Grab() {
-        held = true;
-    }
-
-    public void Drop() {
-        targetPos = tilemaps[0].WorldToCell(transform.position);
-        held = false;
     }
 }

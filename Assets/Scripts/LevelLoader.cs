@@ -10,6 +10,9 @@ public class LevelLoader : MonoBehaviour {
 
     private Grid levelGrid;
     private Tilemap tileMap;
+
+    public List<Vector3Int> gravestoneLocations;
+    public GameController gameController;
 	// Use this for initialization
 	void Start () {
         levelGrid = GetComponent<Grid>();
@@ -17,6 +20,8 @@ public class LevelLoader : MonoBehaviour {
         tileMap.CompressBounds();
         LoadLevel();
         CenterCamera();
+
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
     }
 	
 	// Update is called once per frame
@@ -49,7 +54,7 @@ public class LevelLoader : MonoBehaviour {
                 }
             }
         }
-	}
+    }
 
     void CenterCamera() {
         Tilemap ground = levelGrid.transform.Find("Ground").GetComponent<Tilemap>();
