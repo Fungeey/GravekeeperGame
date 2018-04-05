@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour {
     public bool win = false;
     private GameObject debugLight; // Light for editing level, turns of in game
 
-    [HideInInspector]
+
     public bool playerOnExit; // Bool to hold if player is on exit
                               // Needed because:
                               // From CheckWin() you don't know if the player is on an exit, so you call IsOnExit()
@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
         tileMap = levelGrid.gameObject.transform.GetComponentsInChildren<Tilemap>();
 
         debugLight = gameObject.transform.Find("Debug Light").gameObject;
-        //debugLight.SetActive(false); // Turn it off for smooth lighting, keep on for pixel lighting
+        debugLight.SetActive(false);
 
         FindGravestones(); // Search for gravestones
     }
