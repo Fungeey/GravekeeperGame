@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
         tileMap = levelGrid.gameObject.transform.GetComponentsInChildren<Tilemap>();
 
         debugLight = gameObject.transform.Find("Debug Light").gameObject;
-        debugLight.SetActive(false);
+        //debugLight.SetActive(false); // Turn it off for smooth lighting, keep on for pixel lighting
 
         FindGravestones(); // Search for gravestones
     }
