@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour {
 
     private PlayerMovement playerScript;
     public bool win = false;
+    private GameObject debugLight; // Light for editing level, turns of in game
 
     [HideInInspector]
     public bool playerOnExit; // Bool to hold if player is on exit
@@ -24,6 +25,9 @@ public class GameController : MonoBehaviour {
     void Start() {
         levelGrid = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<Grid>();
         tileMap = levelGrid.gameObject.transform.GetComponentsInChildren<Tilemap>();
+
+        debugLight = gameObject.transform.Find("Debug Light").gameObject;
+        debugLight.SetActive(false);
 
         FindGravestones(); // Search for gravestones
     }
