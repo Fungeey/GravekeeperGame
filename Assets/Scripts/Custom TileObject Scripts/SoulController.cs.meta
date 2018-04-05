@@ -5,7 +5,9 @@ licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - gravestone: {fileID: 11400000, guid: 8f77278b147bedc488f20aea610a3af9, type: 2}
+  - gameController: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

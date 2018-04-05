@@ -12,8 +12,7 @@ public class PlayerMovement : TileObject {
     [HideInInspector]
     public TileObject holdObject; // Object being held (if any)
     public Transform holdPosition;
-
-    public bool moving = false;
+    
     public Direction turning = Direction.UP;
 
     void Update() {
@@ -76,18 +75,11 @@ public class PlayerMovement : TileObject {
     }
 
     bool CanMove(Direction moveDir) {
-        // replace with smarter system later
-
         Vector3Int aheadTile = tilePos + Utility.DirectionVector(moveDir);
 
         if (!tilemaps[0].HasTile(aheadTile)) {
             return false;
         }
-        
-        /*SoulController soul;
-        if (Utility.GetSoulAtPos(tilemaps, aheadTile, out soul)) {
-            return soul.Push(faceDir);
-        }*/
 
         TileObject to;
         if (Utility.GetTileObjectAtPos(aheadTile, out to) && to.pushable) {
@@ -112,11 +104,6 @@ public class PlayerMovement : TileObject {
 
     void GrabAhead(Direction faceDir) {
         if (holdObject == null) {
-            /*SoulController soul;
-            if (Utility.GetSoulAtPos(tilemaps, tilePos + Utility.DirectionVector(faceDir), out soul)) {
-                soul.Grab();
-                holdObject = soul.gameObject;
-            }*/
             TileObject to;
             if (Utility.GetTileObjectAtPos(tilePos + Utility.DirectionVector(faceDir), out to) && to.grabbable) {
                 to.grabComp.Grab();
@@ -127,7 +114,6 @@ public class PlayerMovement : TileObject {
     }
 
     void DropHeld() {
-        // will need to extend in future for other grabbable things?
         holdObject.grabComp.Drop();
         holdObject = null;
     }

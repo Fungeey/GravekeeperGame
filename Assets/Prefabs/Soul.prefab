@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravestone: {fileID: 11400000, guid: 8f77278b147bedc488f20aea610a3af9, type: 2}
+  gameController: {fileID: 0}
 --- !u!114 &114390891834266910
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -94,7 +95,9 @@ MonoBehaviour:
   moveSpeed: 0.1
   levelGrid: {fileID: 0}
   tilemaps: []
+  gameController: {fileID: 0}
   tilePos: {x: 0, y: 0, z: 0}
+  moving: 0
   grabbable: 1
   pushable: 1
   grabComp: {fileID: 0}

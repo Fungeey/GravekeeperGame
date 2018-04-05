@@ -22,10 +22,12 @@ public class Grabbable : MonoBehaviour {
 
     public void Grab() {
         isHeld = true;
+        tileObject.moving = true;
     }
 
     public void Drop() {
-        tileObject.SetTilePos();
+        tileObject.tilePos = tileObject.levelGrid.WorldToCell(transform.position);
         isHeld = false;
+        tileObject.moving = false;
     }
 }

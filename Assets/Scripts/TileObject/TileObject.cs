@@ -18,6 +18,7 @@ public class TileObject : MonoBehaviour {
     public GameController gameController;
 
     public Vector3Int tilePos;
+    public bool moving;
 
     public bool grabbable = false;
     public bool pushable = false;
@@ -39,13 +40,15 @@ public class TileObject : MonoBehaviour {
     }
 
     protected virtual void FixedUpdate() {
-        if (!(grabbable && grabComp.isHeld) && transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) {
-            transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
-        }
-    }
+        if (grabbable && grabComp.isHeld) {
 
-    public void SetTilePos() {
-        tilePos = levelGrid.WorldToCell(transform.position);
+        } else {
+            if (transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) {
+                transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
+            } else {
+                moving = false;
+            }
+        }
     }
 }
 

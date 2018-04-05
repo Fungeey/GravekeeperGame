@@ -20,6 +20,7 @@ public class Pushable : MonoBehaviour {
 
     public bool Push(Direction pushDir) {
         if (CanPush(pushDir)) {
+            tileObject.moving = true;
             tileObject.tilePos += Utility.DirectionVector(pushDir);
             return true;
         } else {
