@@ -38,7 +38,7 @@ public static class Utility {
 
     public static bool IsSolidAtPos(Tilemap[] tilemaps, Vector3Int pos) {
         Grid levelGrid = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<Grid>();
-        Debug.DrawLine(levelGrid.CellToWorld(pos) + new Vector3(0.4f, 0.4f), levelGrid.CellToWorld(pos) + new Vector3(0.6f, 0.6f), Color.blue, 2);
+        MarkPoint(levelGrid.CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0), Color.blue, 2);
         Collider2D coll = Physics2D.OverlapArea(tilemaps[0].CellToWorld(pos) + new Vector3(.1f, .1f, 0), tilemaps[0].CellToWorld(pos + new Vector3Int(1, 1, 0)) - new Vector3(.1f, .1f, 0));
         if (tilemaps[1].HasTile(pos) || coll != null) {
             return true;
@@ -55,5 +55,10 @@ public static class Utility {
         }
         tileObject = null;
         return false;
+    }
+
+    public static void MarkPoint(Vector3 point, Color color, float seconds) {
+        Debug.DrawLine(point + new Vector3(-0.1f, -0.1f), point + new Vector3(0.1f, 0.1f), color, seconds);
+        Debug.DrawLine(point + new Vector3(-0.1f, 0.1f), point + new Vector3(0.1f, -0.1f), color, seconds);
     }
 }

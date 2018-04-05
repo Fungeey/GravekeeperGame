@@ -61,7 +61,9 @@ public class LevelLoader : MonoBehaviour {
         GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
         ground.CompressBounds();
         Vector3 center = ground.localBounds.center;
+        Utility.MarkPoint(ground.localBounds.min, Color.red, 20);
+        Utility.MarkPoint(ground.localBounds.max, Color.yellow, 20);
         center.z = -10;
-        camera.transform.position = center;
+        camera.transform.position = ground.transform.TransformPoint(center);
     }
 }
