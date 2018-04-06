@@ -13,15 +13,19 @@ public class LevelLoader : MonoBehaviour {
 
     public List<Vector3Int> gravestoneLocations;
     public GameController gameController;
+    private Transform soulHolder; // Parent holder of all souls, so GameController can find them for undo
+
 	// Use this for initialization
 	void Start () {
         levelGrid = GetComponent<Grid>();
         tileMap = levelGrid.gameObject.transform.Find("Main").GetComponent<Tilemap>();
         tileMap.CompressBounds();
-        LoadLevel();
-        CenterCamera();
 
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+        soulHolder = gameController.transform.Find("SoulHolder"); //Find the SoulHolder parented under gamecontroller
+
+        LoadLevel();
+        CenterCamera();
     }
 	
 	// Update is called once per frame
@@ -42,7 +46,7 @@ public class LevelLoader : MonoBehaviour {
                         }
                         case "Soul": {
                             tileMap.SetTile(pos, null);
-                            Instantiate(objects[1], tileMap.CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+                            Instantiate(objects[1], tileMap.CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, soulHolder);
                             break;
                         }
                         case "Movable Wall": {

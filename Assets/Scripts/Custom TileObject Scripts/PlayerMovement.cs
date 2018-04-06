@@ -70,8 +70,12 @@ public class PlayerMovement : TileObject {
                 holdPosition.transform.localPosition = Vector3Int.up;
                 holdObject.tilePos = levelGrid.WorldToCell(holdPosition.transform.position);
             }
-            moving = false;
+            if(moving == true) {
+                gameController.saveLevelData(tilemaps[0], tilemaps[1], gameController.soulObjects, gameObject); // Hopefully should only save once
+                moving = false;
+            }
         }
+
     }
 
     bool CanMove(Direction moveDir) {
