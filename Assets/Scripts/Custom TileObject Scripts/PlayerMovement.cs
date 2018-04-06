@@ -6,14 +6,16 @@ using UnityEngine.Tilemaps;
 public class PlayerMovement : TileObject {
     [SerializeField]
     private float pivotSpeed = 15f;
-
-    public Direction facing; // represents direction player is facing
+    public Direction facing = Direction.UP;
+    public Direction turning = Direction.UP;
 
     [HideInInspector]
     public TileObject holdObject; // Object being held (if any)
     public Transform holdPosition;
-    
-    public Direction turning = Direction.UP;
+
+    void Start() {
+        transform.rotation = Utility.DirectionQuaternion(facing);
+    }
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.A) && !moving) { // turn left
@@ -71,8 +73,8 @@ public class PlayerMovement : TileObject {
                 holdObject.tilePos = levelGrid.WorldToCell(holdPosition.transform.position);
             }
             if(moving == true) {
-                gameController.saveLevelData(tilemaps[0], tilemaps[1], gameController.soulObjects, gameObject); // Hopefully should only save once
                 moving = false;
+                //gameController.SaveLevelData();
             }
         }
 
@@ -148,5 +150,17 @@ public class PlayerMovement : TileObject {
 
         return false;
     }
-    
+
+    public override TileObjectState GetState() {
+        if (holdObject != null) DropHeld();
+        Dictionary<string, int> dict = new Dictionary<string, int> {
+            { "facing", (int) facing }
+        };
+        return new TileObjectState(tilePos, dict);
+    }
+
+    public override void SetState(TileObjectState state) {
+        base.SetState(state);
+        this.facing = (Direction)state.additionalData["facing"];
+    }
 }

@@ -34,8 +34,7 @@ public class TileObject : MonoBehaviour {
         tilemaps = levelGrid.GetComponentsInChildren<Tilemap>();
         tilePos = levelGrid.WorldToCell(transform.position);
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-
-
+        
         grabComp = grabbable ? gameObject.AddComponent<Grabbable>() : null;
         pushComp = pushable ? gameObject.AddComponent<Pushable>() : null;
         if (grabbable) grabComp.pivotable = pivotable;
@@ -50,6 +49,29 @@ public class TileObject : MonoBehaviour {
             } else {
                 moving = false;
             }
+        }
+    }
+    
+    public virtual TileObjectState GetState() {
+        return new TileObjectState(tilePos);
+    }
+
+    public virtual void SetState(TileObjectState state) {
+        this.tilePos = state.tilePos;
+    }
+
+    public struct TileObjectState {
+        public Vector3Int tilePos;
+        public Dictionary<string, int> additionalData;
+
+        public TileObjectState(Vector3Int tilePos) {
+            this.tilePos = tilePos;
+            this.additionalData = null;
+        }
+
+        public TileObjectState(Vector3Int tilePos, Dictionary<string, int> additionalData) {
+            this.tilePos = tilePos;
+            this.additionalData = additionalData;
         }
     }
 }

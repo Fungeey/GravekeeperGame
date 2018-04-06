@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - LevelGrid
+  - Soul
+  - MovableWall
+  - TileObjHolder
   layers:
   - Default
   - TransparentFX

@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4787924340041840}
   m_Layer: 0
-  m_Name: SoulHolder
+  m_Name: TileObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravestoneLocations: []
-  soulLocations: []
-  levelUndo: []
+  soulObjects: []
   win: 0
+  undoIndex: 0
   playerOnExit: 0

@@ -37,7 +37,6 @@ GameObject:
   - component: {fileID: 4230533566299452}
   - component: {fileID: 212536950213617292}
   - component: {fileID: 61108591466475046}
-  - component: {fileID: 114390891834266910}
   - component: {fileID: 114295992726190470}
   m_Layer: 0
   m_Name: Soul
@@ -145,19 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14206e3d5df50a24eba82ae173cd0a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullGravestone: {fileID: 11400000, guid: 5c9985017be6bdb4dbaca05a9719198b, type: 2}
-  gameController: {fileID: 0}
---- !u!114 &114390891834266910
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1368143821435302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed00f9715ded8d46abb6f11434f422d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   moveSpeed: 0.1
   levelGrid: {fileID: 0}
   tilemaps: []
@@ -169,6 +155,8 @@ MonoBehaviour:
   pivotable: 1
   grabComp: {fileID: 0}
   pushComp: {fileID: 0}
+  ground: {fileID: 0}
+  fullGravestone: {fileID: 11400000, guid: 5c9985017be6bdb4dbaca05a9719198b, type: 2}
 --- !u!212 &212536950213617292
 SpriteRenderer:
   m_ObjectHideFlags: 1

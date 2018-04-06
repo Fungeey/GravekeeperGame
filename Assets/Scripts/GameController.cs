@@ -5,32 +5,41 @@ using UnityEngine.Tilemaps;
 
 public class GameController : MonoBehaviour {
 
+    // basics
     private Grid levelGrid;
     private Tilemap[] tileMaps;
-    public List<Vector3Int> gravestoneLocations;
-    public List<GameObject> soulObjects; // List of soul objects so we can keep track of them for Undo
-
-    public List<LevelData> levelUndo = new List<LevelData>(); // List of LevelDatas, so you can undo
-    
-    private PlayerMovement playerScript;
-    public bool win = false;
     private GameObject debugLight; // Light for editing level, dimmed in game
-    private GameObject soulHolder;
+
+    // player related
+    private PlayerMovement playerScript;
     private GameObject player;
 
-    public int undoIndex = 0; // The index that we are in the undo array
-    // Increase every time you save a new levelData
-    // Decrease every time you go back one
+    // win conditions
+    public List<Vector3Int> gravestoneLocations;
+    // Bool to hold if player is on exit
+    // Needed because:
+    // From CheckWin() you don't know if the player is on an exit, so you call IsOnExit()
+    // From IsOnExit() you don't know if this GameController asked for it, so you call CheckWin() just in case
+    // Solution: hold data here
+    public bool playerOnExit;
+    public bool win = false;
 
+    // undo feature
+    public GameObject tileObjHolder;
+    public Stack<LevelData> levelDataStack; // List of LevelDatas, so you can undo
+    [SerializeField]
+    public int statesSaved {
+        get {
+            return levelDataStack.Count;
+        }
+    }
 
-    public bool playerOnExit; // Bool to hold if player is on exit
-                              // Needed because:
-                              // From CheckWin() you don't know if the player is on an exit, so you call IsOnExit()
-                              // From IsOnExit() you don't know if this GameController asked for it, so you call CheckWin() just in case
-                              // Solution: hold data here
+    private void Awake() {
+        levelDataStack = new Stack<LevelData>();
+        tileObjHolder = GameObject.FindGameObjectWithTag("TileObjHolder"); // Parent holder of all souls
+        Debug.Log(tileObjHolder);
+    }
 
-
-    // Use this for initialization
     void Start() {
         levelGrid = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<Grid>();
         tileMaps = levelGrid.gameObject.transform.GetComponentsInChildren<Tilemap>();
@@ -38,13 +47,8 @@ public class GameController : MonoBehaviour {
         debugLight = gameObject.transform.Find("Debug Light").gameObject;
         debugLight.GetComponent<Light>().intensity = 0.5f;
 
-        soulHolder = transform.Find("SoulHolder").gameObject; // Parent holder of all souls
         player = GameObject.FindWithTag("Player");
-
         FindGravestones(); // Search for gravestones
-        FindSouls(); // Search for souls (cant join b/c gravestones are on ground, souls are on main)
-
-        saveLevelData(tileMaps[0], tileMaps[1], soulObjects, player);
     }
 
     // Update is called once per frame
@@ -55,11 +59,12 @@ public class GameController : MonoBehaviour {
         }
         if (!win) CheckWin();
 
-        // Check for undo / redo
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            resetLevelData(-1);
-        }else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            resetLevelData(1);
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            SaveLevelData();
+            Debug.Log("Saved state");
+        } else if (levelDataStack.Count > 0 && Input.GetKeyDown(KeyCode.LeftArrow)) {
+            LoadLevelData(levelDataStack.Pop());
+            Debug.Log("Loaded state");
         }
     }
 
@@ -74,13 +79,6 @@ public class GameController : MonoBehaviour {
                     }
                 }
             }
-        }
-    }
-
-    void FindSouls() { // Get every soul [Object], so we can refer to their locations whenever we want
-        for(int i = 0; i < soulHolder.transform.childCount; i++) {
-            soulObjects.Add(soulHolder.transform.GetChild(i).gameObject);
-            // Add every soul parented to SoulHolder
         }
     }
 
@@ -100,42 +98,30 @@ public class GameController : MonoBehaviour {
         return true; // Congrats, you won!
     }
 
-    /// <summary> Go one step in the direction specified 
-    /// The <paramref name="LeftorRight"/> -1 for left, 1 for right
+    /// <summary> Load a LevelData to the scene.
+    /// The data in <paramref name="levelData"/> will be loaded to the scene
     /// </summary>
-    public void resetLevelData(int LeftorRight) {
-        int i = undoIndex + LeftorRight; // Index
-        if (i < 0 && i >= levelUndo.Capacity) {
-            return; // Don't do anything if the index is invalid
-        }
-        LevelData levelData = levelData = levelUndo[i];
+    public void LoadLevelData(LevelData levelData) {
 
-        //Reset tiles from memory
-        tileMaps[0] = levelData.main;
-        tileMaps[1] = levelData.ground;
-
-        // For souls: destroy all souls in scene, make new ones from memory
-        for(int a = 0; i < soulHolder.transform.childCount; i++) {
-            Destroy(soulHolder.transform.GetChild(a)); // Destroy each soul in soulholder
-        }
-        foreach(GameObject soul in levelData.souls) {
-            // Now add them back in from memory
-            Instantiate(soul); //Does this work???
+        //Reset tiles from given level data
+        for (int i = 0; i < 2; i++) {
+            tileMaps[i].SetTilesBlock(tileMaps[0].cellBounds, levelData.maps[i]);
         }
 
-        //For player
-        Destroy(player);
-        GameObject playr = Instantiate(levelData.player); // Does this work??
-        playr.GetComponentInChildren<Light>().enabled = true;
-        playr.GetComponent<PlayerMovement>().enabled = true;
-
+        // restore from levelData
+        for (int i = 0; i < tileObjHolder.transform.childCount; i++) {
+            tileObjHolder.transform.GetChild(i).GetComponent<TileObject>().SetState(levelData.states[i]);
+        }
 
     }
 
-    public void saveLevelData(Tilemap ground, Tilemap main, List<GameObject> soulObj, GameObject Player) {
+    public void SaveLevelData() {
         // Save data after every player move
-        LevelData levelData = new LevelData(tileMaps[0], tileMaps[1], soulObjects, Player);
-        levelUndo.Add(levelData); // Add the data from this move into the array
-        undoIndex++;
+        TileObject.TileObjectState[] tileStates = new TileObject.TileObjectState[tileObjHolder.transform.childCount];
+        for (int i = 0; i < tileStates.Length; i++) {
+            tileStates[i] = tileObjHolder.transform.GetChild(i).GetComponent<TileObject>().GetState();
+        }
+        LevelData snapshot = new LevelData(tileMaps, tileStates);
+        levelDataStack.Push(snapshot); // Add the data from this move into the array
     }
 }

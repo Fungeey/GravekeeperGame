@@ -152,6 +152,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1878459207412596, guid: f70a354823d5570459d5e27eed6bb406, type: 2}
+      propertyPath: m_Name
+      value: TileObjHolder
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878459207412596, guid: f70a354823d5570459d5e27eed6bb406, type: 2}
+      propertyPath: m_TagString
+      value: TileObjHolder
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f70a354823d5570459d5e27eed6bb406, type: 2}
   m_IsPrefabParent: 0

@@ -13,7 +13,6 @@ public class LevelLoader : MonoBehaviour {
 
     public List<Vector3Int> gravestoneLocations;
     public GameController gameController;
-    private Transform soulHolder; // Parent holder of all souls, so GameController can find them for undo
 
 	// Use this for initialization
 	void Start () {
@@ -22,13 +21,11 @@ public class LevelLoader : MonoBehaviour {
         tileMap.CompressBounds();
 
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-        soulHolder = gameController.transform.Find("SoulHolder"); //Find the SoulHolder parented under gamecontroller
 
         LoadLevel();
         CenterCamera();
     }
 	
-	// Update is called once per frame
 	void LoadLevel () {
 		for(int i = tileMap.cellBounds.xMin; i < tileMap.cellBounds.xMax; i++) {
             for(int j = tileMap.cellBounds.yMin; j < tileMap.cellBounds.yMax; j++) {
@@ -41,17 +38,17 @@ public class LevelLoader : MonoBehaviour {
                     switch (name) {
                         case "Player": {
                             tileMap.SetTile(pos, null);
-                            Instantiate(objects[0], tileMap.CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+                            InstTileObject(objects[0], pos);
                             break;
                         }
                         case "Soul": {
                             tileMap.SetTile(pos, null);
-                            Instantiate(objects[1], tileMap.CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, soulHolder);
+                            InstTileObject(objects[1], pos);
                             break;
                         }
                         case "Movable Wall": {
                             tileMap.SetTile(pos, null);
-                            Instantiate(objects[2], tileMap.CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+                            InstTileObject(objects[2], pos);
                             break;
                         }
                     }
@@ -70,4 +67,10 @@ public class LevelLoader : MonoBehaviour {
         center.z = -10;
         camera.transform.position = ground.transform.TransformPoint(center);
     }
+
+    public void InstTileObject(GameObject tile, Vector3Int tilePos) {
+        Debug.Log("Instantiated at " + tilePos);
+        Instantiate(tile, tileMap.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, gameController.tileObjHolder.transform);
+    }
+    
 }
