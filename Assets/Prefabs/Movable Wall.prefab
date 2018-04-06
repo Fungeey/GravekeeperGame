@@ -81,9 +81,12 @@ MonoBehaviour:
   moveSpeed: 0.1
   levelGrid: {fileID: 0}
   tilemaps: []
+  gameController: {fileID: 0}
   tilePos: {x: 0, y: 0, z: 0}
-  grabbable: 0
+  moving: 0
+  grabbable: 1
   pushable: 1
+  pivotable: 0
   grabComp: {fileID: 0}
   pushComp: {fileID: 0}
 --- !u!212 &212228897037657470

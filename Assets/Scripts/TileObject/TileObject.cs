@@ -22,6 +22,7 @@ public class TileObject : MonoBehaviour {
 
     public bool grabbable = false;
     public bool pushable = false;
+    public bool pivotable = false;
 
     [HideInInspector]
     public Grabbable grabComp;
@@ -37,6 +38,7 @@ public class TileObject : MonoBehaviour {
 
         grabComp = grabbable ? gameObject.AddComponent<Grabbable>() : null;
         pushComp = pushable ? gameObject.AddComponent<Pushable>() : null;
+        if (grabbable) grabComp.pivotable = pivotable;
     }
 
     protected virtual void FixedUpdate() {

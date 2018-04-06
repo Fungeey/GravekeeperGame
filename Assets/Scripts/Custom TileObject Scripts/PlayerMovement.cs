@@ -125,6 +125,7 @@ public class PlayerMovement : TileObject {
     bool CanTurn(Direction faceDir, Direction turnDirection) {
         //Debug.DrawLine(levelGrid.CellToWorld(tilePos), levelGrid.CellToWorld(tilePos + DirectionVector(faceDir) + DirectionVector(DirAdd(faceDir, turnDirection))), Color.red, 10000);
         if (holdObject != null) {
+            if (!holdObject.grabComp.pivotable) return false;
             if (Utility.IsSolidAtPos(tilemaps, tilePos + Utility.DirectionVector(Utility.DirAdd(faceDir, turnDirection))) || // position + relative turning direction
                 Utility.IsSolidAtPos(tilemaps, tilePos + Utility.DirectionVector(faceDir) + Utility.DirectionVector(Utility.DirAdd(faceDir, turnDirection)))) { // position + forwards + relative turning direction
                 return false;

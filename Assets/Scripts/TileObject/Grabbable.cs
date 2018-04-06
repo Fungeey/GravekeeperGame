@@ -7,6 +7,7 @@ public class Grabbable : MonoBehaviour {
     private TileObject tileObject;
 
     public bool isHeld;
+    public bool pivotable = true;
 
     public void Start() {
         tileObject = GetComponent<TileObject>();

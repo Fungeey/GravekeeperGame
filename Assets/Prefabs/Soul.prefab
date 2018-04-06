@@ -166,6 +166,7 @@ MonoBehaviour:
   moving: 0
   grabbable: 1
   pushable: 1
+  pivotable: 1
   grabComp: {fileID: 0}
   pushComp: {fileID: 0}
 --- !u!212 &212536950213617292
