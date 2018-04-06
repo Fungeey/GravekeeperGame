@@ -27,12 +27,6 @@ public class GameController : MonoBehaviour {
     // undo feature
     public GameObject tileObjHolder;
     public Stack<LevelData> levelDataStack; // List of LevelDatas, so you can undo
-    [SerializeField]
-    public int statesSaved {
-        get {
-            return levelDataStack.Count;
-        }
-    }
 
     private void Awake() {
         levelDataStack = new Stack<LevelData>();
@@ -105,7 +99,7 @@ public class GameController : MonoBehaviour {
 
         //Reset tiles from given level data
         for (int i = 0; i < 2; i++) {
-            tileMaps[i].SetTilesBlock(tileMaps[0].cellBounds, levelData.maps[i]);
+            tileMaps[i].SetTilesBlock(levelData.bounds, levelData.maps[i]);
         }
 
         // restore from levelData
@@ -121,7 +115,8 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < tileStates.Length; i++) {
             tileStates[i] = tileObjHolder.transform.GetChild(i).GetComponent<TileObject>().GetState();
         }
-        LevelData snapshot = new LevelData(tileMaps, tileStates);
+        LevelLoader levelLoader = levelGrid.GetComponent<LevelLoader>();
+        LevelData snapshot = new LevelData(levelLoader.MaximumLevelBounds(), tileMaps, tileStates);
         levelDataStack.Push(snapshot); // Add the data from this move into the array
     }
 }

@@ -15,12 +15,14 @@ public struct LevelData {
     // Souls / Player objects
 
     public TileBase[][] maps; // Hold copies of level tiles
+    public BoundsInt bounds;
     public TileObject.TileObjectState[] states; // Hold positions of souls
 
-    public LevelData(Tilemap[] maps, TileObject.TileObjectState[] states) {
+    public LevelData(BoundsInt totalLevelBounds, Tilemap[] maps, TileObject.TileObjectState[] states) {
         this.maps = new TileBase[2][];
+        this.bounds = totalLevelBounds;
         for (int i = 0; i < 2; i++) {
-            this.maps[i] = maps[i].GetTilesBlock(maps[i].cellBounds);
+            this.maps[i] = maps[i].GetTilesBlock(totalLevelBounds);
             Debug.Log(i);
             foreach (TileBase tile in this.maps[i]) {
                 Debug.Log(tile != null ? tile.name : "empty");
