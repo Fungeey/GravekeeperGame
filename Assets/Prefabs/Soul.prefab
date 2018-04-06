@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14206e3d5df50a24eba82ae173cd0a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravestone: {fileID: 11400000, guid: 8f77278b147bedc488f20aea610a3af9, type: 2}
+  fullGravestone: {fileID: 11400000, guid: 5c9985017be6bdb4dbaca05a9719198b, type: 2}
   gameController: {fileID: 0}
 --- !u!114 &114390891834266910
 MonoBehaviour:
