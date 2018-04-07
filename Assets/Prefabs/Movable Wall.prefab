@@ -87,6 +87,7 @@ MonoBehaviour:
   grabbable: 1
   pushable: 1
   pivotable: 0
+  canPushOffBoard: 0
   grabComp: {fileID: 0}
   pushComp: {fileID: 0}
 --- !u!212 &212228897037657470
@@ -103,7 +104,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4ee573ab4ad65f54e9a5b3df7534a157, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

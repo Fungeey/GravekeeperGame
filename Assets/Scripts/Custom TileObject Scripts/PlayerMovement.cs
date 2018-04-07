@@ -72,6 +72,8 @@ public class PlayerMovement : TileObject {
     }
 
     protected override void FixedUpdate() {
+        Camera.main.gameObject.transform.position = transform.position - new Vector3(0, 0, 1);
+
         if (transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) { // Moving
             transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
 

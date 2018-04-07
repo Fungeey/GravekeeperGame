@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fcb9139d6939c4f9f9bbf38318138f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.1
+  moveSpeed: 0.2
   levelGrid: {fileID: 0}
   tilemaps:
   - {fileID: 0}
@@ -191,7 +191,7 @@ MonoBehaviour:
   canPushOffBoard: 0
   grabComp: {fileID: 0}
   pushComp: {fileID: 0}
-  pivotSpeed: 15
+  pivotSpeed: 20
   facing: 0
   turning: 0
   playerSprites:
