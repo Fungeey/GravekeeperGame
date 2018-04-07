@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -43,10 +44,18 @@ public class GameController : MonoBehaviour {
 
         player = GameObject.FindWithTag("Player");
         FindGravestones(); // Search for gravestones
+
+        // SAVING -- Set default completion string if it doesn't exist
+        // 1 byte for every level, 0 is unsolved, 1 is solved.
+        // (Assuming 15 levels for now)
+        if (!PlayerPrefs.HasKey("solvedLevels")) {
+            PlayerPrefs.SetString("solvedLevels", "000000000000000");
+        }
     }
 
     // Update is called once per frame
     public void Update() {
+
         if (playerScript == null) {
             player = GameObject.FindGameObjectWithTag("Player");
             playerScript = player.GetComponent<PlayerMovement>();
@@ -81,14 +90,23 @@ public class GameController : MonoBehaviour {
             // Check if there is a gravestone at that position on ground (not solid)
             if (!(tileMaps[1].HasTile(pos) && tileMaps[1].GetTile(pos).name == "Full Gravestone")) {
                 // If there is a tile, return false
-                Debug.Log("Unfilled grave found!");
+                //Debug.Log("Unfilled grave found!");
                 return false;
             }
         }
-        
-        Debug.Log("WWWWWIIIIINNNNN");
+
+        // Save a bool string of every level, so completion is visible in level select
+        string newSave = PlayerPrefs.GetString("solvedLevels"); // Get previous save string
+
+        // Build index of the current scene (-1 because that's how many scenes are before main levels)
+        int bIndex = SceneManager.GetActiveScene().buildIndex - 1; 
+
+        newSave = newSave.Substring(0, bIndex) + "1" + newSave.Substring(bIndex + 1);
+        PlayerPrefs.SetString("solvedLevels", newSave);
+
         win = true;
-        return true; // Congrats, you won!
+        SceneManager.LoadScene(0); // Load level select scene
+        return true; // Congrats, you solved this puzzle!
     }
 
     /// <summary> Load a LevelData to the scene.

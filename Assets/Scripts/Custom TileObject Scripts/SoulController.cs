@@ -22,8 +22,15 @@ public class SoulController : TileObject {
             // fill gravestone
             tilemaps[0].SetTile(tilePos, ground);
             tilemaps[1].SetTile(tilePos, fullGravestone);
-            gameController.CheckWin();
+
             // Deactivate it
+            gameObject.SetActive(false);
+            // For some reason putting this after CheckWin() causes it not to fire
+
+            gameController.CheckWin();
+            
+        }
+        if(tile == null && !moving) {
             gameObject.SetActive(false);
         }
     }
