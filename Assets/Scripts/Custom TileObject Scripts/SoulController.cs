@@ -16,6 +16,9 @@ public class SoulController : TileObject {
 
         if (tile == null && !moving) {
             gameObject.SetActive(false);
+            if (grabComp.isHeld) {
+                gameController.playerScript.DropHeld();
+            }
         }
 
         if (tile != null && !moving && !grabComp.isHeld && tile.name == "Gravestone") {

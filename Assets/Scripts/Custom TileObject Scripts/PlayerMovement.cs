@@ -137,7 +137,7 @@ public class PlayerMovement : TileObject {
 
     }
 
-    void DropHeld() {
+    public void DropHeld() {
         holdObject.grabComp.Drop();
         holdObject = null;
     }

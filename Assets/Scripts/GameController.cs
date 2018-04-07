@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour {
     private GameObject debugLight; // Light for editing level, dimmed in game
 
     // player related
-    private PlayerMovement playerScript;
+    public PlayerMovement playerScript;
     private GameObject player;
 
     // win conditions
