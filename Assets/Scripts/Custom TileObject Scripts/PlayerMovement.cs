@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class PlayerMovement : TileObject {
     [SerializeField]
     private float pivotSpeed = 15f;
     public Direction facing = Direction.UP;
     public Direction turning = Direction.UP;
+
+    [Tooltip("Player sprite, then playerGrabbing sprite")]
+    public Sprite[] playerSprites; // Holds default and grabbing sprites
 
     [HideInInspector]
     public TileObject holdObject; // Object being held (if any)
@@ -53,13 +55,19 @@ public class PlayerMovement : TileObject {
                 moving = true;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Z)) { // toggle hold
-            if (holdObject == null) {
+        //if (Input.GetKey(KeyCode.Z)) { // toggle hold
+            if (holdObject == null && Input.GetMouseButtonDown(1)) {
                 GrabAhead(facing);
+                GetComponent<SpriteRenderer>().sprite = playerSprites[1];
+                Debug.Log("Grab");
             } else {
-                DropHeld();
+                if (Input.GetMouseButtonUp(1)) {
+                    Debug.Log("Drop");
+                    GetComponent<SpriteRenderer>().sprite = playerSprites[0];
+                    DropHeld();
+                }
             }
-        }
+        //}
 
         //Debug.DrawLine(transform.position, levelGrid.CellToWorld(aheadTile) + new Vector3(0.5f, 0.5f, 0));
     }
