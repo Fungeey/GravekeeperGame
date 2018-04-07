@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(TileObject))]
 public class Pushable : MonoBehaviour {
     private TileObject tileObject;
+    public bool canPushOffEdge = false;
 
     public void Start() {
         tileObject = GetComponent<TileObject>();
@@ -13,6 +14,9 @@ public class Pushable : MonoBehaviour {
     public bool CanPush(Direction pushDir) {
         Vector3Int aheadTile = tileObject.tilePos + Utility.DirectionVector(pushDir);
         if (Utility.IsSolidAtPos(tileObject.tilemaps, aheadTile)) {
+            return false;
+        }
+        if (!canPushOffEdge && !tileObject.tilemaps[0].HasTile(aheadTile)) {
             return false;
         }
         return true;

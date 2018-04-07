@@ -153,6 +153,7 @@ MonoBehaviour:
   grabbable: 1
   pushable: 1
   pivotable: 1
+  canPushOffBoard: 1
   grabComp: {fileID: 0}
   pushComp: {fileID: 0}
   ground: {fileID: 0}

@@ -48,8 +48,10 @@ public class GameController : MonoBehaviour {
         // SAVING -- Set default completion string if it doesn't exist
         // 1 byte for every level, 0 is unsolved, 1 is solved.
         // (Assuming 15 levels for now)
-        if (!PlayerPrefs.HasKey("solvedLevels")) {
-            PlayerPrefs.SetString("solvedLevels", "000000000000000");
+        if (!PlayerPrefs.HasKey("solvedLevels") || PlayerPrefs.GetString("solvedLevels").Length != SceneManager.sceneCountInBuildSettings - 1) {
+            Debug.Log("Length of string is " + PlayerPrefs.GetString("solvedLevels").Length);
+            PlayerPrefs.SetString("solvedLevels", new string('0', SceneManager.sceneCountInBuildSettings - 1));
+            Debug.Log("Regenerated solved levels to " + PlayerPrefs.GetString("solvedLevels"));
         }
     }
 
@@ -100,8 +102,9 @@ public class GameController : MonoBehaviour {
 
         // Build index of the current scene (-1 because that's how many scenes are before main levels)
         int bIndex = SceneManager.GetActiveScene().buildIndex - 1; 
-
+        
         newSave = newSave.Substring(0, bIndex) + "1" + newSave.Substring(bIndex + 1);
+        Debug.Log("Saving the string " + newSave);
         PlayerPrefs.SetString("solvedLevels", newSave);
 
         win = true;

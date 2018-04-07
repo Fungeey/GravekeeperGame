@@ -15,7 +15,7 @@ public class LevelSelect : MonoBehaviour {
 
     private List<GameObject> levels = new List<GameObject>(); // List holding all the levels
 
-	void Start () {
+    void Start() {
         foreach (Transform child in transform) {
             // For every world
             for (int i = 0; i < levelsPerWorld; i++) {
@@ -26,18 +26,18 @@ public class LevelSelect : MonoBehaviour {
 
         UpdateSolvedLevels();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         CheckLevelSelect();
     }
 
     void UpdateSolvedLevels() {
         // For every level in [levels], check if it is completed.
         string solvedLevels = PlayerPrefs.GetString("solvedLevels");
-
-        for (int i = 0; i < numWorlds*levelsPerWorld; i++) {
-            if(solvedLevels.Substring(i, 1) == "1") {
+        Debug.Log(solvedLevels);
+        for (int i = 0; i < (numWorlds * levelsPerWorld) - 1; i++) {
+            if (solvedLevels.Substring(i, 1) == "1") {
                 Debug.Log("Level " + i + " has already been completed");
                 levels[i].GetComponent<Image>().color = Color.green;
             }
@@ -51,7 +51,7 @@ public class LevelSelect : MonoBehaviour {
         string name = EventSystem.current.currentSelectedGameObject.name;
 
         string ind = name.Substring(0, 1) + name.Substring(2, 1);
-        int index = (Convert.ToInt32(ind.Substring(1, 1)) + (Convert.ToInt32(ind.Substring(0, 1)) - 1) * levelsPerWorld) - 1 + buffer;
+        int index = Convert.ToInt32(ind.Substring(0, 1)) * levelsPerWorld + Convert.ToInt32(ind.Substring(1, 1)) - 1 + buffer;
         // Parses level numbers (1.1, 1.5, 3.4) into indexes
         // World 1's levels go from 1-5, then world 2's levels go from 6-10, etc
         // This way we can easily load scenes using the build index

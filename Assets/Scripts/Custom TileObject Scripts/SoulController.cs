@@ -7,18 +7,18 @@ public class SoulController : TileObject {
 
     public Tile ground;
     public Tile fullGravestone;
-    private TileObject soulTileObject;
-
-    private void Start() {
-        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-    }
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
 
         // If you are on a gravestone
         TileBase tile = tilemaps[0].GetTile(tilePos);
-        if (tile != null && !moving && tile.name == "Gravestone") {
+
+        if (tile == null && !moving) {
+            gameObject.SetActive(false);
+        }
+
+        if (tile != null && !moving && !grabComp.isHeld && tile.name == "Gravestone") {
             // fill gravestone
             tilemaps[0].SetTile(tilePos, ground);
             tilemaps[1].SetTile(tilePos, fullGravestone);
@@ -30,9 +30,7 @@ public class SoulController : TileObject {
             gameController.CheckWin();
             
         }
-        if(tile == null && !moving) {
-            gameObject.SetActive(false);
-        }
+        
     }
 
     public override TileObjectState GetState() {

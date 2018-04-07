@@ -23,6 +23,7 @@ public class TileObject : MonoBehaviour {
     public bool grabbable = false;
     public bool pushable = false;
     public bool pivotable = false;
+    public bool canPushOffBoard = false;
 
     [HideInInspector]
     public Grabbable grabComp;
@@ -34,24 +35,24 @@ public class TileObject : MonoBehaviour {
         tilemaps = levelGrid.GetComponentsInChildren<Tilemap>();
         tilePos = levelGrid.WorldToCell(transform.position);
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-        
+
         grabComp = grabbable ? gameObject.AddComponent<Grabbable>() : null;
         pushComp = pushable ? gameObject.AddComponent<Pushable>() : null;
         if (grabbable) grabComp.pivotable = pivotable;
+        if (canPushOffBoard) pushComp.canPushOffEdge = canPushOffBoard;
     }
 
     protected virtual void FixedUpdate() {
-        if (grabbable && grabComp.isHeld) {
-
-        } else {
-            if (transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) {
+        if (transform.position != levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0)) {
+            if (grabbable && !grabComp.isHeld) {
                 transform.position = Vector3.MoveTowards(transform.position, levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), moveSpeed);
-            } else {
-                moving = false;
             }
+        } else {
+            moving = false;
         }
+
     }
-    
+
     public virtual TileObjectState GetState() {
         return new TileObjectState(tilePos);
     }

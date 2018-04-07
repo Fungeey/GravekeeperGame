@@ -56,17 +56,16 @@ public class PlayerMovement : TileObject {
             }
         }
         //if (Input.GetKey(KeyCode.Z)) { // toggle hold
-            if (holdObject == null && Input.GetMouseButtonDown(1)) {
-                GrabAhead(facing);
-                GetComponent<SpriteRenderer>().sprite = playerSprites[1];
-                Debug.Log("Grab");
-            } else {
-                if (Input.GetMouseButtonUp(1)) {
-                    Debug.Log("Drop");
-                    GetComponent<SpriteRenderer>().sprite = playerSprites[0];
+        if (holdObject == null && Input.GetMouseButtonDown(1)) {
+            GrabAhead(facing);
+            GetComponent<SpriteRenderer>().sprite = playerSprites[1];
+        } else {
+            if (Input.GetMouseButtonUp(1)) {
+                GetComponent<SpriteRenderer>().sprite = playerSprites[0];
+                if (holdObject != null)
                     DropHeld();
-                }
             }
+        }
         //}
 
         //Debug.DrawLine(transform.position, levelGrid.CellToWorld(aheadTile) + new Vector3(0.5f, 0.5f, 0));

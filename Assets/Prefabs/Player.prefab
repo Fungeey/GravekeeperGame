@@ -188,6 +188,7 @@ MonoBehaviour:
   grabbable: 0
   pushable: 0
   pivotable: 0
+  canPushOffBoard: 0
   grabComp: {fileID: 0}
   pushComp: {fileID: 0}
   pivotSpeed: 15
