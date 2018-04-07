@@ -33,6 +33,7 @@ public class SoulController : TileObject {
         
     }
 
+
     public override TileObjectState GetState() {
         Dictionary<string, int> dict = new Dictionary<string, int> {
             { "active", gameObject.activeSelf ? 1 : 0 }
