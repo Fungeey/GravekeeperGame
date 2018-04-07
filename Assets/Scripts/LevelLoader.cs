@@ -63,29 +63,28 @@ public class LevelLoader : MonoBehaviour {
 
     void CenterCamera() {
         GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
-        Vector3 center = ground.localBounds.center;
-        //Utility.MarkPoint(ground.localBounds.min, Color.red, 20);
-        //Utility.MarkPoint(ground.localBounds.max, Color.yellow, 20);
+        Vector3 center = MaximumLevelBounds().center;
         center.z = -10;
         camera.transform.position = ground.transform.TransformPoint(center);
     }
 
     public void InstTileObject(GameObject tile, Vector3Int tilePos) {
-        Debug.Log("Instantiated at " + tilePos);
+        // Debug.Log("Instantiated at " + tilePos);
         Instantiate(tile, main.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, gameController.tileObjHolder.transform);
     }
 
     public BoundsInt MaximumLevelBounds() {
         BoundsInt bounds = new BoundsInt {
             xMin = System.Math.Min(main.cellBounds.xMin, ground.cellBounds.xMin) - 1,
-            yMin = System.Math.Min(main.cellBounds.yMin, ground.cellBounds.yMin) - 1,
             xMax = System.Math.Max(main.cellBounds.xMin, ground.cellBounds.xMax) + 1,
-            yMax = System.Math.Max(main.cellBounds.yMax, ground.cellBounds.yMax) + 1
+            yMin = System.Math.Min(main.cellBounds.yMin, ground.cellBounds.yMin) - 1,
+            yMax = System.Math.Max(main.cellBounds.yMax, ground.cellBounds.yMax) + 1,
+            zMin = 0,
+            zMax = 1
         };
-        Debug.Log(bounds);
 
-        Utility.MarkPoint(bounds.min, Color.red, 20);
-        Utility.MarkPoint(bounds.max, Color.yellow, 20);
+        Utility.MarkPoint(bounds.min, Color.green, 20);
+        Utility.MarkPoint(bounds.max, Color.green, 20);
         return bounds;
     }
 }

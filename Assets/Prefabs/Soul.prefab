@@ -155,7 +155,7 @@ MonoBehaviour:
   pivotable: 1
   grabComp: {fileID: 0}
   pushComp: {fileID: 0}
-  ground: {fileID: 0}
+  ground: {fileID: 11400000, guid: 014c86fb0c5ee3a4fb115e8b98aa2cdf, type: 2}
   fullGravestone: {fileID: 11400000, guid: 5c9985017be6bdb4dbaca05a9719198b, type: 2}
 --- !u!212 &212536950213617292
 SpriteRenderer:

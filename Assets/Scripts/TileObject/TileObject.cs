@@ -58,6 +58,7 @@ public class TileObject : MonoBehaviour {
 
     public virtual void SetState(TileObjectState state) {
         this.tilePos = state.tilePos;
+        transform.position = levelGrid.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f);
     }
 
     public struct TileObjectState {

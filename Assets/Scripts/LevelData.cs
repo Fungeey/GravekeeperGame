@@ -6,13 +6,13 @@ using UnityEngine.Tilemaps;
 
 public struct LevelData {
 
-    // a class that holds data about the level
+    // a structure that holds data about the level
     // GameController holds a list of these, so you can undo.
     // Whenever the player moves, make one of these based on level
 
     // Things to keep track of: 
     // main / ground layers
-    // Souls / Player objects
+    // states of all TileObjects
 
     public TileBase[][] maps; // Hold copies of level tiles
     public BoundsInt bounds;
@@ -23,10 +23,6 @@ public struct LevelData {
         this.bounds = totalLevelBounds;
         for (int i = 0; i < 2; i++) {
             this.maps[i] = maps[i].GetTilesBlock(totalLevelBounds);
-            Debug.Log(i);
-            foreach (TileBase tile in this.maps[i]) {
-                Debug.Log(tile != null ? tile.name : "empty");
-            }
         }
         this.states = states;
     }

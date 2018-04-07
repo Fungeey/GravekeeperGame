@@ -13,16 +13,16 @@ public class SoulController : TileObject {
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
     }
 
-    private void Update() {
+    protected override void FixedUpdate() {
+        base.FixedUpdate();
+
         // If you are on a gravestone
         TileBase tile = tilemaps[0].GetTile(tilePos);
         if (tile != null && !moving && tile.name == "Gravestone") {
-            // Check if all the gravestones are full
-
-            // Then delete the gravestone
+            // fill gravestone
             tilemaps[0].SetTile(tilePos, ground);
-            // Put a gravestone in the Main (solid) layer
             tilemaps[1].SetTile(tilePos, fullGravestone);
+            gameController.CheckWin();
             // Deactivate it
             gameObject.SetActive(false);
         }

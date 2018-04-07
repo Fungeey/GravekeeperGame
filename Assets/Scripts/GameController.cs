@@ -30,8 +30,8 @@ public class GameController : MonoBehaviour {
 
     private void Awake() {
         levelDataStack = new Stack<LevelData>();
-        tileObjHolder = GameObject.FindGameObjectWithTag("TileObjHolder"); // Parent holder of all souls
-        Debug.Log(tileObjHolder);
+        // parent object for tile objects for easy finding
+        tileObjHolder = GameObject.FindGameObjectWithTag("TileObjHolder");
     }
 
     void Start() {
@@ -46,17 +46,14 @@ public class GameController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    public void Update() {
         if (playerScript == null) {
             player = GameObject.FindGameObjectWithTag("Player");
             playerScript = player.GetComponent<PlayerMovement>();
         }
-        if (!win) CheckWin();
-
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            SaveLevelData();
-            Debug.Log("Saved state");
-        } else if (levelDataStack.Count > 0 && Input.GetKeyDown(KeyCode.LeftArrow)) {
+        //if (!win) CheckWin();
+        
+        if (levelDataStack.Count > 0 && Input.GetKeyDown(KeyCode.LeftArrow)) {
             LoadLevelData(levelDataStack.Pop());
             Debug.Log("Loaded state");
         }
@@ -77,16 +74,18 @@ public class GameController : MonoBehaviour {
     }
 
     public bool CheckWin() {
+        if (tileMaps[0].GetTile(playerScript.tilePos).name != "Exit")
+            return false;
+
         foreach (Vector3Int pos in gravestoneLocations) {
             // Check if there is a gravestone at that position on ground (not solid)
-            if (tileMaps[0].GetTile(pos) != null) {
+            if (!(tileMaps[1].HasTile(pos) && tileMaps[1].GetTile(pos).name == "Full Gravestone")) {
                 // If there is a tile, return false
+                Debug.Log("Unfilled grave found!");
                 return false;
             }
         }
-
-        if (!playerOnExit)
-            return false;
+        
         Debug.Log("WWWWWIIIIINNNNN");
         win = true;
         return true; // Congrats, you won!
@@ -100,11 +99,13 @@ public class GameController : MonoBehaviour {
         //Reset tiles from given level data
         for (int i = 0; i < 2; i++) {
             tileMaps[i].SetTilesBlock(levelData.bounds, levelData.maps[i]);
+            tileMaps[i].CompressBounds();
         }
 
         // restore from levelData
         for (int i = 0; i < tileObjHolder.transform.childCount; i++) {
             tileObjHolder.transform.GetChild(i).GetComponent<TileObject>().SetState(levelData.states[i]);
+
         }
 
     }

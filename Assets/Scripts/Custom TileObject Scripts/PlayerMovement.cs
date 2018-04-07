@@ -20,23 +20,35 @@ public class PlayerMovement : TileObject {
     void Update() {
         if (Input.GetKeyDown(KeyCode.A) && !moving) { // turn left
             if (CanTurn(facing, Direction.LEFT)) {
+                gameController.SaveLevelData();
                 facing = Utility.DirAdd(facing, Direction.LEFT);
                 turning = Direction.LEFT;
                 moving = true;
             }
         } else if (Input.GetKeyDown(KeyCode.D) && !moving) { // turn right
             if (CanTurn(facing, Direction.RIGHT)) {
+                gameController.SaveLevelData();
                 facing = Utility.DirAdd(facing, Direction.RIGHT);
                 turning = Direction.RIGHT;
                 moving = true;
             }
         } else if (Input.GetKeyDown(KeyCode.W) && !moving) { // forwards
             if (CanMove(facing)) {
+                gameController.SaveLevelData();
+                TileObject to;
+                if (Utility.GetTileObjectAtPos(tilePos + Utility.DirectionVector(facing), out to) && to.pushable) {
+                    to.pushComp.Push(facing);
+                }
                 tilePos += Utility.DirectionVector(facing);
                 moving = true;
             }
         } else if (Input.GetKeyDown(KeyCode.S) && !moving) { // backwards
             if (CanMove(Utility.DirAdd(facing, Direction.DOWN))) {
+                gameController.SaveLevelData();
+                TileObject to;
+                if (Utility.GetTileObjectAtPos(tilePos + Utility.DirectionVector(Utility.DirAdd(facing, Direction.DOWN)), out to) && to.pushable) {
+                    to.pushComp.Push(Utility.DirAdd(facing, Direction.DOWN));
+                }
                 tilePos -= Utility.DirectionVector(facing);
                 moving = true;
             }
@@ -60,7 +72,6 @@ public class PlayerMovement : TileObject {
                 holdObject.transform.position = Vector3.MoveTowards(holdObject.transform.position, holdPosition.position, moveSpeed);
             }
 
-            IsOnExit(); // Check if you are on an exit
         } else if (Vector3Int.RoundToInt(transform.rotation.eulerAngles) != Vector3Int.RoundToInt(Utility.DirectionQuaternion(facing).eulerAngles)) { // Turning
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Utility.DirectionQuaternion(facing), pivotSpeed);
 
@@ -72,9 +83,9 @@ public class PlayerMovement : TileObject {
                 holdPosition.transform.localPosition = Vector3Int.up;
                 holdObject.tilePos = levelGrid.WorldToCell(holdPosition.transform.position);
             }
-            if(moving == true) {
+            if (moving == true) {
+                gameController.CheckWin();
                 moving = false;
-                //gameController.SaveLevelData();
             }
         }
 
@@ -89,7 +100,7 @@ public class PlayerMovement : TileObject {
 
         TileObject to;
         if (Utility.GetTileObjectAtPos(aheadTile, out to) && to.pushable) {
-            return to.pushComp.Push(moveDir);
+            return to.pushComp.CanPush(moveDir);
         }
 
         if (holdObject == null) {
@@ -116,7 +127,7 @@ public class PlayerMovement : TileObject {
                 holdObject = to;
             }
         }
-        
+
     }
 
     void DropHeld() {
@@ -136,23 +147,7 @@ public class PlayerMovement : TileObject {
         return true;
     }
 
-    public bool IsOnExit() { // Check if you are standing on an exit, used in GameController win checking
-        if (tilemaps[0].GetTile(tilePos).name == "Exit") {
-            // If you are standing on an exit
-            if (gameController.win == false) {
-                gameController.CheckWin();
-                gameController.playerOnExit = true;
-            }
-            return true;
-        } else {
-            gameController.playerOnExit = false;
-        }
-
-        return false;
-    }
-
     public override TileObjectState GetState() {
-        if (holdObject != null) DropHeld();
         Dictionary<string, int> dict = new Dictionary<string, int> {
             { "facing", (int) facing }
         };
@@ -162,5 +157,7 @@ public class PlayerMovement : TileObject {
     public override void SetState(TileObjectState state) {
         base.SetState(state);
         this.facing = (Direction)state.additionalData["facing"];
+        transform.rotation = Utility.DirectionQuaternion(facing);
+        if (holdObject != null) DropHeld();
     }
 }
