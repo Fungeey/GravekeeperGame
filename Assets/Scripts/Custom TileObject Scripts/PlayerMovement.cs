@@ -56,6 +56,8 @@ public class PlayerMovement : TileObject {
                     moving = true;
                 }
             }
+        }
+        if (!moving) {
             //if (Input.GetKey(KeyCode.Z)) { // toggle hold
             if (Input.GetMouseButton(1)) {
                 if (holdObject == null)
