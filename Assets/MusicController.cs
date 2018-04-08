@@ -45,4 +45,8 @@ public class MusicController : MonoBehaviour {
             }
         }
     }
+
+    public void ToggleMute() {
+        audioSource.mute = !audioSource.mute;
+    }
 }

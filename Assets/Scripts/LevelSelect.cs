@@ -12,6 +12,7 @@ public class LevelSelect : MonoBehaviour {
 
     [Tooltip("Number of scenes before the main levels")]
     public int buffer;
+    private bool transitioning = false;
 
     private List<GameObject> levels = new List<GameObject>(); // List holding all the levels
 
@@ -29,7 +30,8 @@ public class LevelSelect : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        CheckLevelSelect();
+        if (!transitioning)
+            CheckLevelSelect();
     }
 
     void UpdateSolvedLevels() {
@@ -61,5 +63,10 @@ public class LevelSelect : MonoBehaviour {
 
         Debug.Log(index);
         SceneManager.LoadScene(index);
+    }
+
+    public void ReturnToMenu() {
+        transitioning = true;
+        SceneManager.LoadScene(0);
     }
 }

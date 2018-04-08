@@ -2,16 +2,13 @@
 using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.anyKey) {
-            SceneManager.LoadScene(1);
-        }
-	}
+    public void GoLevelSelect() {
+        SceneManager.LoadScene(1);
+    }
+    public void GoAbout() {
+        SceneManager.LoadScene(3);
+    }
+    public void GoExit() {
+        Application.Quit();
+    }
 }

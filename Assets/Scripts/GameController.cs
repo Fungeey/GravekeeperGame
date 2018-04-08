@@ -113,7 +113,7 @@ public class GameController : MonoBehaviour {
         PlayerPrefs.SetString("solvedLevels", newSave);
 
         if(newSave.IndexOf("0") == -1) {
-            SceneManager.LoadScene(3); // Beat game, go to credits
+            SceneManager.LoadScene(2); // Beat game, go to credits
         }
         win = true;
         SceneManager.LoadScene(1); // Load level select scene
@@ -155,6 +155,6 @@ public class GameController : MonoBehaviour {
     }
 
     public void ReturnToSelect() {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 }
