@@ -20,55 +20,53 @@ public class PlayerMovement : TileObject {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.A) && !moving) { // turn left
-            if (CanTurn(facing, Direction.LEFT)) {
-                gameController.SaveLevelData();
-                facing = Utility.DirAdd(facing, Direction.LEFT);
-                turning = Direction.LEFT;
-                moving = true;
-            }
-        } else if (Input.GetKeyDown(KeyCode.D) && !moving) { // turn right
-            if (CanTurn(facing, Direction.RIGHT)) {
-                gameController.SaveLevelData();
-                facing = Utility.DirAdd(facing, Direction.RIGHT);
-                turning = Direction.RIGHT;
-                moving = true;
-            }
-        } else if (Input.GetKeyDown(KeyCode.W) && !moving) { // forwards
-            if (CanMove(facing)) {
-                gameController.SaveLevelData();
-                TileObject to;
-                if (Utility.GetTileObjectAtPos(tilePos + Utility.DirectionVector(facing), out to) && to.pushable) {
-                    to.pushComp.Push(facing);
+        if (!moving) {
+            if (Input.GetKeyDown(KeyCode.A)) { // turn left
+                if (CanTurn(facing, Direction.LEFT)) {
+                    gameController.SaveLevelData();
+                    facing = Utility.DirAdd(facing, Direction.LEFT);
+                    turning = Direction.LEFT;
+                    moving = true;
                 }
-                tilePos += Utility.DirectionVector(facing);
-                moving = true;
-            }
-        } else if (Input.GetKeyDown(KeyCode.S) && !moving) { // backwards
-            if (CanMove(Utility.DirAdd(facing, Direction.DOWN))) {
-                gameController.SaveLevelData();
-                TileObject to;
-                if (Utility.GetTileObjectAtPos(tilePos + Utility.DirectionVector(Utility.DirAdd(facing, Direction.DOWN)), out to) && to.pushable) {
-                    to.pushComp.Push(Utility.DirAdd(facing, Direction.DOWN));
+            } else if (Input.GetKeyDown(KeyCode.D)) { // turn right
+                if (CanTurn(facing, Direction.RIGHT)) {
+                    gameController.SaveLevelData();
+                    facing = Utility.DirAdd(facing, Direction.RIGHT);
+                    turning = Direction.RIGHT;
+                    moving = true;
                 }
-                tilePos -= Utility.DirectionVector(facing);
-                moving = true;
+            } else if (Input.GetKeyDown(KeyCode.W)) { // forwards
+                if (CanMove(facing)) {
+                    gameController.SaveLevelData();
+                    TileObject to;
+                    if (Utility.GetTileObjectAtPos(tilePos + Utility.DirectionVector(facing), out to) && to.pushable) {
+                        to.pushComp.Push(facing);
+                    }
+                    tilePos += Utility.DirectionVector(facing);
+                    moving = true;
+                }
+            } else if (Input.GetKeyDown(KeyCode.S)) { // backwards
+                if (CanMove(Utility.DirAdd(facing, Direction.DOWN))) {
+                    gameController.SaveLevelData();
+                    TileObject to;
+                    if (Utility.GetTileObjectAtPos(tilePos + Utility.DirectionVector(Utility.DirAdd(facing, Direction.DOWN)), out to) && to.pushable) {
+                        to.pushComp.Push(Utility.DirAdd(facing, Direction.DOWN));
+                    }
+                    tilePos -= Utility.DirectionVector(facing);
+                    moving = true;
+                }
             }
-        }
-        //if (Input.GetKey(KeyCode.Z)) { // toggle hold
-        if (holdObject == null && Input.GetMouseButtonDown(1)) {
-            GrabAhead(facing);
-            GetComponent<SpriteRenderer>().sprite = playerSprites[1];
-        } else {
-            if (Input.GetMouseButtonUp(1)) {
-                GetComponent<SpriteRenderer>().sprite = playerSprites[0];
+            //if (Input.GetKey(KeyCode.Z)) { // toggle hold
+            if (Input.GetMouseButton(1)) {
+                if (holdObject == null)
+                    GrabAhead(facing);
+                GetComponent<SpriteRenderer>().sprite = playerSprites[1];
+            } else {
                 if (holdObject != null)
                     DropHeld();
+                GetComponent<SpriteRenderer>().sprite = playerSprites[0];
             }
         }
-        //}
-
-        //Debug.DrawLine(transform.position, levelGrid.CellToWorld(aheadTile) + new Vector3(0.5f, 0.5f, 0));
     }
 
     protected override void FixedUpdate() {
