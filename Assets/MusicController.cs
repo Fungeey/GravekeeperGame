@@ -26,7 +26,7 @@ public class MusicController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1) {
-            if (audioSource.clip != bgms[0] || !GetComponent<AudioSource>().isPlaying) {
+            if ((audioSource.clip != bgms[0] && audioSource.clip != bgms[1]) || !GetComponent<AudioSource>().isPlaying) {
                 audioSource.clip = bgms[0];
                 audioSource.Play();
                 audioSource.loop = true;

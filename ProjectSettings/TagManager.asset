@@ -8,6 +8,7 @@ TagManager:
   - Soul
   - MovableWall
   - TileObjHolder
+  - MusicPlayer
   layers:
   - Default
   - TransparentFX

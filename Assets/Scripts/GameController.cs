@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
@@ -81,7 +82,7 @@ public class GameController : MonoBehaviour {
                     if (tile.name == "Gravestone") {
                         gravestoneLocations.Add(pos);
                     }else if(tile.name == "Ground") {
-                        tileMaps[0].SetTile(pos, groundVariants[Random.Range(0, groundVariants.Length)]);
+                        tileMaps[0].SetTile(pos, groundVariants[UnityEngine.Random.Range(0, groundVariants.Length)]);
                     }
                 }
             }
@@ -111,6 +112,9 @@ public class GameController : MonoBehaviour {
         Debug.Log("Saving the string " + newSave);
         PlayerPrefs.SetString("solvedLevels", newSave);
 
+        if(newSave.IndexOf("0") == -1) {
+            SceneManager.LoadScene(3); // Beat game, go to credits
+        }
         win = true;
         SceneManager.LoadScene(1); // Load level select scene
         return true; // Congrats, you solved this puzzle!
