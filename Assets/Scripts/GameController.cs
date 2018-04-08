@@ -141,4 +141,12 @@ public class GameController : MonoBehaviour {
         LevelData snapshot = new LevelData(levelLoader.MaximumLevelBounds(), tileMaps, tileStates);
         levelDataStack.Push(snapshot); // Add the data from this move into the array
     }
+
+    public void ResetLevel() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ReturnToSelect() {
+        SceneManager.LoadScene(0);
+    }
 }
