@@ -690,6 +690,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &562417040
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 81486368768193058, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
+  m_IsPrefabParent: 0
 --- !u!224 &667552528 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224335589982801760, guid: 9c546aa00a4e0e542a48011986922d0b,

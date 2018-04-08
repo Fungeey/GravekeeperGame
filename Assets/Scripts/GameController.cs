@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour {
         }
         //if (!win) CheckWin();
         
-        if (levelDataStack.Count > 0 && Input.GetKeyDown(KeyCode.LeftArrow)) {
+        if (levelDataStack.Count > 0 && Input.GetMouseButtonDown(1)) {
             LoadLevelData(levelDataStack.Pop());
             Debug.Log("Loaded state");
         }

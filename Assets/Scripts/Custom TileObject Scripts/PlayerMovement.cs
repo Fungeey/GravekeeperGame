@@ -59,7 +59,7 @@ public class PlayerMovement : TileObject {
         }
         if (!moving) {
             //if (Input.GetKey(KeyCode.Z)) { // toggle hold
-            if (Input.GetMouseButton(1)) {
+            if (Input.GetMouseButton(0)) {
                 if (holdObject == null)
                     GrabAhead(facing);
                 GetComponent<SpriteRenderer>().sprite = playerSprites[1];
