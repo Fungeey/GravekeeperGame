@@ -71,6 +71,9 @@ public class GameController : MonoBehaviour {
             LoadLevelData(levelDataStack.Pop());
             Debug.Log("Loaded state");
         }
+
+        if (win) ReturnToSelect();
+
     }
 
     void FindGravestones() { //Find location of gravestones
@@ -101,22 +104,8 @@ public class GameController : MonoBehaviour {
                 return false;
             }
         }
-
-        // Save a bool string of every level, so completion is visible in level select
-        string newSave = PlayerPrefs.GetString("solvedLevels"); // Get previous save string
-
-        // Build index of the current scene (-1 because that's how many scenes are before main levels)
-        int bIndex = SceneManager.GetActiveScene().buildIndex - 4; 
         
-        newSave = newSave.Substring(0, bIndex) + "1" + newSave.Substring(bIndex + 1);
-        Debug.Log("Saving the string " + newSave);
-        PlayerPrefs.SetString("solvedLevels", newSave);
-
-        if(newSave.IndexOf("0") == -1) {
-            SceneManager.LoadScene(2); // Beat game, go to credits
-        }
         win = true;
-        SceneManager.LoadScene(1); // Load level select scene
         return true; // Congrats, you solved this puzzle!
     }
 
@@ -134,7 +123,6 @@ public class GameController : MonoBehaviour {
         // restore from levelData
         for (int i = 0; i < tileObjHolder.transform.childCount; i++) {
             tileObjHolder.transform.GetChild(i).GetComponent<TileObject>().SetState(levelData.states[i]);
-
         }
 
     }
@@ -155,6 +143,19 @@ public class GameController : MonoBehaviour {
     }
 
     public void ReturnToSelect() {
-        SceneManager.LoadScene(1);
+        // Save a bool string of every level, so completion is visible in level select
+        string newSave = PlayerPrefs.GetString("solvedLevels"); // Get previous save string
+
+        // Build index of the current scene (-1 because that's how many scenes are before main levels)
+        int bIndex = SceneManager.GetActiveScene().buildIndex - 4;
+
+        newSave = newSave.Substring(0, bIndex) + (win ? "1" : "0") + newSave.Substring(bIndex + 1);
+        PlayerPrefs.SetString("solvedLevels", newSave);
+
+        if (newSave.IndexOf("0") == -1) {
+            SceneManager.LoadScene(2); // Beat game, go to credits
+        } else {
+            SceneManager.LoadScene(1);
+        }
     }
 }
