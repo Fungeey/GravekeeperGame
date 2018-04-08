@@ -26,7 +26,7 @@ public class MusicController : MonoBehaviour {
                 audioSource.clip = bgms[musicIndex];
                 audioSource.Play();
 
-                if (musicIndex == bgms.Length) {
+                if (musicIndex == bgms.Length - 1) {
                     musicIndex = 1;
                 } else {
                     musicIndex++;
