@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour {
     public GameObject tileObjHolder;
     public Stack<LevelData> levelDataStack; // List of LevelDatas, so you can undo
 
+    public Tile[] groundVariants;
+
     private void Awake() {
         levelDataStack = new Stack<LevelData>();
         // parent object for tile objects for easy finding
@@ -78,6 +80,8 @@ public class GameController : MonoBehaviour {
                 if (tile != null) {
                     if (tile.name == "Gravestone") {
                         gravestoneLocations.Add(pos);
+                    }else if(tile.name == "Ground") {
+                        tileMaps[0].SetTile(pos, groundVariants[Random.Range(0, groundVariants.Length)]);
                     }
                 }
             }

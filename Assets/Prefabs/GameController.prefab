@@ -397,6 +397,13 @@ MonoBehaviour:
   playerOnExit: 0
   win: 0
   tileObjHolder: {fileID: 0}
+  groundVariants:
+  - {fileID: 11400000, guid: 014c86fb0c5ee3a4fb115e8b98aa2cdf, type: 2}
+  - {fileID: 11400000, guid: a71d165d65cb2e24fa8bb0ca32fc61b5, type: 2}
+  - {fileID: 11400000, guid: fd4f3cf67a741a24d802c62418bd15e0, type: 2}
+  - {fileID: 11400000, guid: e56e84ee4035a81439e71cb17a83fdc2, type: 2}
+  - {fileID: 11400000, guid: 014c86fb0c5ee3a4fb115e8b98aa2cdf, type: 2}
+  - {fileID: 11400000, guid: 014c86fb0c5ee3a4fb115e8b98aa2cdf, type: 2}
 --- !u!114 &114395948320934474
 MonoBehaviour:
   m_ObjectHideFlags: 1

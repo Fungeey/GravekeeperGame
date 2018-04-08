@@ -1277,6 +1277,16 @@ Prefab:
       propertyPath: m_Tiles.Array.data[16].second.m_ColliderType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8195094281743388362, guid: b6fd627012af91e4f823aa776eda2256,
+        type: 2}
+      propertyPath: m_Tiles.Array.data[0].first.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8195094281743388362, guid: b6fd627012af91e4f823aa776eda2256,
+        type: 2}
+      propertyPath: m_Tiles.Array.data[1].first.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b6fd627012af91e4f823aa776eda2256, type: 2}
   m_IsPrefabParent: 0
