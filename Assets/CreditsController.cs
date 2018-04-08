@@ -21,7 +21,10 @@ public class CreditsController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        AudioSource music = GameObject.FindWithTag("MusicPlayer").GetComponent<AudioSource>();
+        GameObject musicController = GameObject.FindWithTag("MusicPlayer");
+        musicController.GetComponent<MusicController>().beatGame = true; // nice job
+
+        AudioSource music = musicController.GetComponent<AudioSource>();
         music.clip = creditsTheme;
         music.Play();
         music.loop = false;

@@ -7,6 +7,8 @@ public class MusicController : MonoBehaviour {
 
     [Tooltip("Main menu, credits, misc bgms")]
     public AudioClip[] bgms;
+    public bool beatGame = false;
+
     private AudioSource audioSource;
     private int musicIndex = 2; // Music will go in order (not enough songs to shuffle, don't want to get the same one twice)
 
@@ -26,7 +28,12 @@ public class MusicController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1) {
-            if ((audioSource.clip != bgms[0] && audioSource.clip != bgms[1]) || !GetComponent<AudioSource>().isPlaying) {
+            if (beatGame) {
+                if((audioSource.clip != bgms[1] && audioSource.clip != bgms[2]) || !audioSource.isPlaying)
+                audioSource.clip = bgms[2];
+                audioSource.Play();
+                audioSource.loop = true;
+            }else if (audioSource.clip != bgms[0] || !GetComponent<AudioSource>().isPlaying) {
                 audioSource.clip = bgms[0];
                 audioSource.Play();
                 audioSource.loop = true;

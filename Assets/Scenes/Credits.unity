@@ -678,7 +678,7 @@ Prefab:
     - target: {fileID: 114900058360992522, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34,
         type: 2}
       propertyPath: bgms.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4723758547604962, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
       propertyPath: m_LocalPosition.x
@@ -726,7 +726,7 @@ Prefab:
         type: 2}
       propertyPath: bgms.Array.data[3]
       value: 
-      objectReference: {fileID: 8300000, guid: 13a136f80fb7b624599a86b588fc123e, type: 3}
+      objectReference: {fileID: 8300000, guid: d420867887262b74193ea17306b959b9, type: 3}
     - target: {fileID: 114900058360992522, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34,
         type: 2}
       propertyPath: bgms.Array.data[4]
@@ -926,7 +926,7 @@ Prefab:
         type: 2}
       propertyPath: bgms.Array.data[2]
       value: 
-      objectReference: {fileID: 8300000, guid: d420867887262b74193ea17306b959b9, type: 3}
+      objectReference: {fileID: 8300000, guid: f66dc5d58dfe4f1499c5d7baa78f9089, type: 3}
     - target: {fileID: 1455618297083658, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
       propertyPath: m_TagString
       value: MusicPlayer
