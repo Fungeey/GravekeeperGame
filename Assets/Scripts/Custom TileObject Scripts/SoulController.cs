@@ -9,6 +9,7 @@ public class SoulController : TileObject {
     public Tile fullGravestone;
     Light light1;
     ParticleSystem partSystem;
+    private bool activated = true;
 
 
     private void Start() {
@@ -30,7 +31,8 @@ public class SoulController : TileObject {
         }
 
         if (tile == null && !moving) {
-            gameObject.SetActive(false);
+            if(activated) Deactivate();
+
             if (grabComp.isHeld) {
                 gameController.playerScript.DropHeld();
             }
@@ -42,7 +44,7 @@ public class SoulController : TileObject {
             tilemaps[1].SetTile(tilePos, fullGravestone);
 
             // Deactivate it
-            Deactivate();
+            if (activated) Deactivate();
             // For some reason putting this after CheckWin() causes it not to fire
 
             gameController.CheckWin();
@@ -52,21 +54,25 @@ public class SoulController : TileObject {
     }
 
     void Deactivate() {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        activated = false;
 
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
 
+        partSystem.Play();
         partSystem.Emit(5);
         transform.GetChild(0).gameObject.SetActive(false);
     }
 
     void Activate() {
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
+        activated = true;
 
         GetComponent<SpriteRenderer>().enabled = true;
         GetComponent<BoxCollider2D>().enabled = true;
 
+        partSystem.Stop();
         transform.GetChild(0).gameObject.SetActive(true);
     }
 
