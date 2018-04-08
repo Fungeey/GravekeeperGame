@@ -29,11 +29,14 @@ public class MusicController : MonoBehaviour {
 	void Update () {
         if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1) {
             if (beatGame) {
-                if((audioSource.clip != bgms[1] && audioSource.clip != bgms[2]) || !audioSource.isPlaying)
-                audioSource.clip = bgms[2];
-                audioSource.Play();
-                audioSource.loop = true;
+                Debug.Log("Beat game, starting cool music");
+                if ((audioSource.clip != bgms[1] && audioSource.clip != bgms[2]) || !audioSource.isPlaying) {
+                    audioSource.clip = bgms[2];
+                    audioSource.Play();
+                    audioSource.loop = true;
+                }
             }else if (audioSource.clip != bgms[0] || !GetComponent<AudioSource>().isPlaying) {
+                Debug.Log("Not beaten yet");
                 audioSource.clip = bgms[0];
                 audioSource.Play();
                 audioSource.loop = true;
