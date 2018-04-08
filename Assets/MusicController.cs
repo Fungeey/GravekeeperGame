@@ -9,10 +9,17 @@ public class MusicController : MonoBehaviour {
     private AudioSource audioSource;
     private int musicIndex = 1; // Music will go in order (not enough songs to shuffle, don't want to get the same one twice)
 
+    private static bool hasInstantiated = false;
+
     // Use this for initialization
     void Start () {
-        DontDestroyOnLoad(this.gameObject);
-        audioSource = GetComponent<AudioSource>();
+        if (!hasInstantiated) {
+            DontDestroyOnLoad(this.gameObject);
+            audioSource = GetComponent<AudioSource>();
+            hasInstantiated = true;
+        } else {
+            Destroy(gameObject);
+        }
     }
 	
 	// Update is called once per frame
