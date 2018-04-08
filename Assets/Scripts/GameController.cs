@@ -106,7 +106,7 @@ public class GameController : MonoBehaviour {
         string newSave = PlayerPrefs.GetString("solvedLevels"); // Get previous save string
 
         // Build index of the current scene (-1 because that's how many scenes are before main levels)
-        int bIndex = SceneManager.GetActiveScene().buildIndex - 2; 
+        int bIndex = SceneManager.GetActiveScene().buildIndex - 4; 
         
         newSave = newSave.Substring(0, bIndex) + "1" + newSave.Substring(bIndex + 1);
         Debug.Log("Saving the string " + newSave);

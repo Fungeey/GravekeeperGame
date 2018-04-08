@@ -214,7 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelsPerWorld: 5
   numWorlds: 4
-  buffer: 3
+  buffer: 4
 --- !u!114 &37819465
 MonoBehaviour:
   m_ObjectHideFlags: 0

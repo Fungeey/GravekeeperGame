@@ -8,9 +8,9 @@ public class CreditsController : MonoBehaviour {
     public AudioClip creditsTheme;
     public GameObject[] creditSlides;
 
-    IEnumerator showCreditSlides() {
+    IEnumerator ShowCreditSlides() {
         for (int i = 0; i < creditSlides.Length; i++) {
-            if(i != 0) {
+            if (i != 0) {
                 creditSlides[i-1].SetActive(false);
             }
             creditSlides[i].SetActive(true);
@@ -32,7 +32,7 @@ public class CreditsController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        StartCoroutine(showCreditSlides());
+        StartCoroutine(ShowCreditSlides());
 
     }
 }
