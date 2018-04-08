@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed00f9715ded8d46abb6f11434f422d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.1
+  moveSpeed: 0.2
   levelGrid: {fileID: 0}
   tilemaps: []
   gameController: {fileID: 0}

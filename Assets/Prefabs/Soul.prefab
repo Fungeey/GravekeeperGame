@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14206e3d5df50a24eba82ae173cd0a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.1
+  moveSpeed: 0.2
   levelGrid: {fileID: 0}
   tilemaps: []
   gameController: {fileID: 0}
