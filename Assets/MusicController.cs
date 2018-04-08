@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MusicController : MonoBehaviour {
 
+    [Tooltip("Main menu, credits, misc bgms")]
     public AudioClip[] bgms;
     private AudioSource audioSource;
-    private int musicIndex = 1; // Music will go in order (not enough songs to shuffle, don't want to get the same one twice)
+    private int musicIndex = 2; // Music will go in order (not enough songs to shuffle, don't want to get the same one twice)
 
     private static bool hasInstantiated = false;
 
@@ -24,17 +25,20 @@ public class MusicController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!GetComponent<AudioSource>().isPlaying) {
-            if (SceneManager.GetActiveScene().buildIndex == 0) {
-                // Main menu
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1) {
+            if (audioSource.clip != bgms[0] || !GetComponent<AudioSource>().isPlaying) {
                 audioSource.clip = bgms[0];
                 audioSource.Play();
-            } else {
+                audioSource.loop = true;
+            }
+        } else {
+            if (!GetComponent<AudioSource>().isPlaying || audioSource.clip == bgms[0]) {
                 audioSource.clip = bgms[musicIndex];
                 audioSource.Play();
+                audioSource.loop = false;
 
                 if (musicIndex == bgms.Length - 1) {
-                    musicIndex = 1;
+                    musicIndex = 2;
                 } else {
                     musicIndex++;
                 }
