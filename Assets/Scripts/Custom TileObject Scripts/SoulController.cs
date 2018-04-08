@@ -8,9 +8,12 @@ public class SoulController : TileObject {
     public Tile ground;
     public Tile fullGravestone;
     Light light1;
+    ParticleSystem partSystem;
+
 
     private void Start() {
         light1 = transform.GetChild(0).GetComponent<Light>();
+        partSystem = GetComponent<ParticleSystem>();
     }
 
     protected override void FixedUpdate() {
@@ -54,7 +57,7 @@ public class SoulController : TileObject {
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
 
-        GetComponent<ParticleSystem>().Emit(5);
+        partSystem.Emit(5);
         transform.GetChild(0).gameObject.SetActive(false);
     }
 
