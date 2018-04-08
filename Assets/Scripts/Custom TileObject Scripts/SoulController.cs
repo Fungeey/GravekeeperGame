@@ -7,12 +7,24 @@ public class SoulController : TileObject {
 
     public Tile ground;
     public Tile fullGravestone;
+    Light light1;
+
+    private void Start() {
+        light1 = transform.GetChild(0).GetComponent<Light>();
+    }
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
 
         // If you are on a gravestone
         TileBase tile = tilemaps[0].GetTile(tilePos);
+        if (grabComp.isHeld) {
+            light1.color = new Color(0, 0.8f, 1, 1);
+            light1.intensity = 10;
+        } else {
+            light1.color = Color.white;
+            light1.intensity = 5;
+        }
 
         if (tile == null && !moving) {
             gameObject.SetActive(false);
@@ -27,7 +39,7 @@ public class SoulController : TileObject {
             tilemaps[1].SetTile(tilePos, fullGravestone);
 
             // Deactivate it
-            gameObject.SetActive(false);
+            Deactivate();
             // For some reason putting this after CheckWin() causes it not to fire
 
             gameController.CheckWin();
@@ -37,6 +49,8 @@ public class SoulController : TileObject {
     }
 
     void Deactivate() {
+        gameObject.SetActive(false);
+
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
 
@@ -45,6 +59,8 @@ public class SoulController : TileObject {
     }
 
     void Activate() {
+        gameObject.SetActive(true);
+
         GetComponent<SpriteRenderer>().enabled = true;
         GetComponent<BoxCollider2D>().enabled = true;
 
@@ -62,5 +78,10 @@ public class SoulController : TileObject {
     public override void SetState(TileObjectState state) {
         base.SetState(state);
         gameObject.SetActive(state.additionalData["active"] == 1);
+        if (gameObject.activeSelf) {
+            Activate();
+        } else {
+            Deactivate();
+        }
     }
 }
