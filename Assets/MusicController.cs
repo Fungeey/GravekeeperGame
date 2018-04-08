@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MusicController : MonoBehaviour {
@@ -13,6 +14,7 @@ public class MusicController : MonoBehaviour {
     private int musicIndex = 2; // Music will go in order (not enough songs to shuffle, don't want to get the same one twice)
 
     private static bool hasInstantiated = false;
+    public bool muted = false;
 
     // Use this for initialization
     void Start () {
@@ -27,6 +29,8 @@ public class MusicController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        audioSource.mute = muted;
+
         if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1) {
             if (beatGame) {
                 Debug.Log("Beat game, starting cool music");
@@ -48,15 +52,11 @@ public class MusicController : MonoBehaviour {
                 audioSource.loop = false;
 
                 if (musicIndex == bgms.Length - 1) {
-                    musicIndex = 2;
+                    musicIndex = 3;
                 } else {
                     musicIndex++;
                 }
             }
         }
-    }
-
-    public void ToggleMute() {
-        audioSource.mute = !audioSource.mute;
     }
 }

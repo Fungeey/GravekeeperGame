@@ -9,6 +9,7 @@ TagManager:
   - MovableWall
   - TileObjHolder
   - MusicPlayer
+  - Waves
   layers:
   - Default
   - TransparentFX

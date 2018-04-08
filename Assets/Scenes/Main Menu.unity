@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 1095764586}
   m_Layer: 5
   m_Name: Soundwaves
-  m_TagString: Untagged
+  m_TagString: Waves
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1250,7 +1250,12 @@ Prefab:
     - target: {fileID: 114900058360992522, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34,
         type: 2}
       propertyPath: beatGame
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 82349434622816784, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34,
+        type: 2}
+      propertyPath: m_Volume
+      value: 0.46
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 81486368768193058, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34, type: 2}
@@ -1386,9 +1391,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1440043890}
-  - component: {fileID: 1440043892}
   - component: {fileID: 1440043891}
   - component: {fileID: 1440043893}
+  - component: {fileID: 1440043892}
   m_Layer: 5
   m_Name: Mute Button
   m_TagString: Untagged
@@ -1436,7 +1441,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1440043889}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1447,9 +1452,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.71323526, g: 0.71323526, b: 0.71323526, a: 1}
-    m_HighlightedColor: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
-    m_PressedColor: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1463,11 +1468,8 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1460733294}
-  toggleTransition: 1
-  graphic: {fileID: 1095764586}
-  m_Group: {fileID: 0}
-  onValueChanged:
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 735388278}
@@ -1481,9 +1483,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 1
 --- !u!114 &1440043893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1495,6 +1496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efbe744539b4ae040862a4c8f3dba9e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waves: {fileID: 1095764584}
 --- !u!1 &1460733292
 GameObject:
   m_ObjectHideFlags: 0
