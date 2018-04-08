@@ -36,6 +36,21 @@ public class SoulController : TileObject {
         
     }
 
+    void Deactivate() {
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = false;
+
+        GetComponent<ParticleSystem>().Emit(5);
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    void Activate() {
+        GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<BoxCollider2D>().enabled = true;
+
+        transform.GetChild(0).gameObject.SetActive(true);
+    }
+
 
     public override TileObjectState GetState() {
         Dictionary<string, int> dict = new Dictionary<string, int> {
