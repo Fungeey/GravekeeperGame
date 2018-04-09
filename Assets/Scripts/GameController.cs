@@ -51,9 +51,9 @@ public class GameController : MonoBehaviour {
         // SAVING -- Set default completion string if it doesn't exist
         // 1 byte for every level, 0 is unsolved, 1 is solved.
         // (Assuming 15 levels for now)
-        if (!PlayerPrefs.HasKey("solvedLevels") || PlayerPrefs.GetString("solvedLevels").Length != SceneManager.sceneCountInBuildSettings - 1) {
+        if (!PlayerPrefs.HasKey("solvedLevels") || PlayerPrefs.GetString("solvedLevels").Length != SceneManager.sceneCountInBuildSettings - 4) {
             Debug.Log("Length of string is " + PlayerPrefs.GetString("solvedLevels").Length);
-            PlayerPrefs.SetString("solvedLevels", new string('0', SceneManager.sceneCountInBuildSettings - 1));
+            PlayerPrefs.SetString("solvedLevels", new string('0', SceneManager.sceneCountInBuildSettings - 4));
             Debug.Log("Regenerated solved levels to " + PlayerPrefs.GetString("solvedLevels"));
         }
     }
@@ -73,7 +73,6 @@ public class GameController : MonoBehaviour {
         }
 
         if (win) ReturnToSelect();
-
     }
 
     void FindGravestones() { //Find location of gravestones
@@ -150,6 +149,7 @@ public class GameController : MonoBehaviour {
         int bIndex = SceneManager.GetActiveScene().buildIndex - 4;
 
         newSave = newSave.Substring(0, bIndex) + (win ? "1" : "0") + newSave.Substring(bIndex + 1);
+        Debug.Log(newSave);
         PlayerPrefs.SetString("solvedLevels", newSave);
 
         if (newSave.IndexOf("0") == -1) {

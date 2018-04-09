@@ -17,7 +17,7 @@ public class MusicController : MonoBehaviour {
     public bool muted = false;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         if (!hasInstantiated) {
             DontDestroyOnLoad(this.gameObject);
             audioSource = GetComponent<AudioSource>();
@@ -26,21 +26,21 @@ public class MusicController : MonoBehaviour {
             Destroy(gameObject);
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         audioSource.mute = muted;
 
         if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1) {
             if (beatGame) {
-                Debug.Log("Beat game, starting cool music");
+                //Debug.Log("Beat game, starting cool music");
                 if ((audioSource.clip != bgms[1] && audioSource.clip != bgms[2]) || !audioSource.isPlaying) {
                     audioSource.clip = bgms[2];
                     audioSource.Play();
                     audioSource.loop = true;
                 }
-            }else if (audioSource.clip != bgms[0] || !GetComponent<AudioSource>().isPlaying) {
-                Debug.Log("Not beaten yet");
+            } else if (audioSource.clip != bgms[0] || !GetComponent<AudioSource>().isPlaying) {
+                //Debug.Log("Not beaten yet");
                 audioSource.clip = bgms[0];
                 audioSource.Play();
                 audioSource.loop = true;

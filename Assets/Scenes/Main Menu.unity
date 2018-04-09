@@ -1250,7 +1250,7 @@ Prefab:
     - target: {fileID: 114900058360992522, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34,
         type: 2}
       propertyPath: beatGame
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 82349434622816784, guid: 8c5a4f72cba3dc14489a8ec8dacd0a34,
         type: 2}
